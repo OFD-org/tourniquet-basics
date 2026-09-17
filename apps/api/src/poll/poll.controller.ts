@@ -94,6 +94,26 @@ export class PollController {
         return this.pollService.submitAnswer(dto, req.user.userId);
     }
 
+    @Post("back")
+    @UseGuards(AuthGuard("jwt"))
+    @ApiBearerAuth()
+    @ApiOperation({
+        summary: "Undo one step and reopen that node",
+        description:
+            "Removes the latest answer only. Call repeatedly to walk back 7→6→…→1→start. Does not end the session.",
+    })
+    undoBack(@Req() req) {
+        return this.pollService.undoLastDecision(req.user.userId);
+    }
+
+    @Get("status")
+    @UseGuards(AuthGuard("jwt"))
+    @ApiBearerAuth()
+    @ApiOperation({ summary: "Active algorithm session status for CTA labels" })
+    getStatus(@Req() req) {
+        return this.pollService.getStatus(req.user.userId);
+    }
+
     /**
      * Retrieve the full result set for a completed (or in-progress) session.
      * Protected by JWT — only authenticated users (admins) can preview answers.

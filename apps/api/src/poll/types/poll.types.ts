@@ -1,24 +1,34 @@
 import { PollQuestion } from "../data/poll-questions.data";
+import { FlowNode } from "../data/poll-flow.definition";
 
-/** Returned when a question is served to the client. */
+/** @deprecated Prefer FlowNodePayload for the decision-tree API. */
 export interface QuestionPayload {
     question: PollQuestion;
-    /** 1-based step counter for progress display (e.g. "Step 3 of 10") */
     step: number;
     totalSteps: number;
 }
 
-/** Returned when all questions have been answered. */
+/** Current decision-tree node served to the client. */
+export interface FlowNodePayload {
+    node: FlowNode;
+    /** 1-based progress (answers completed + 1) */
+    step: number;
+    /** Approximate depth for UI (count of interactive nodes) */
+    totalSteps: number;
+    /** True when at least one answer can be undone (step-by-step back to start). */
+    canGoBack: boolean;
+}
+
 export interface CompletionPayload {
     completed: true;
     sessionId: string;
     message: string;
 }
 
-/** Union of what POST /poll/answer can return. */
-export type AnswerResponse = QuestionPayload | CompletionPayload;
+export type AnswerResponse =
+    | (FlowNodePayload & { token?: string })
+    | CompletionPayload;
 
-/** Shape of one answered question in the results view. */
 export interface AnswerWithQuestion {
     questionId: string;
     order: number;
@@ -28,7 +38,6 @@ export interface AnswerWithQuestion {
     answeredAt: Date;
 }
 
-/** Full session result payload returned by GET /poll/results/:sessionId */
 export interface PollResultPayload {
     sessionId: string;
     completed: boolean;

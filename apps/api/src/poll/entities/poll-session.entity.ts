@@ -20,9 +20,16 @@ export class PollSession {
     @Column({ nullable: true })
     userId: number;
 
-    /** Index of the next question to be answered (0-based). */
+    /**
+     * Legacy linear index — number of answers saved.
+     * Navigation uses currentNodeId.
+     */
     @Column({ default: 0 })
     currentStep: number;
+
+    /** Decision-tree node id from poll-flow.definition.ts */
+    @Column({ default: "intro_wounds" })
+    currentNodeId: string;
 
     @Column({ default: false })
     completed: boolean;

@@ -1,15 +1,23 @@
 import { AppBar, Toolbar, Typography, Link as MuiLink, Box } from "@mui/material";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowRight } from "../../icons/ArrowRight";
+import { useFlowNavBridge } from "../../layout/Layout";
 
 export const Navbar = () => {
   const { t } = useTranslation();
-
-  const navigate = useNavigate();
+  const location = useLocation();
+  const { onBack, canGoBack } = useFlowNavBridge();
 
   const handleBack = () => {
-    navigate(-1);
+    // On algorithm route: only undo in-session steps — never leave to home / "not started"
+    if (location.pathname.startsWith("/flow")) {
+      if (canGoBack && onBack) {
+        onBack();
+      }
+      return;
+    }
+    window.location.assign("/");
   };
 
   return (
@@ -40,6 +48,7 @@ export const Navbar = () => {
               justifyContent: "space-between",
               alignItems: "center",
               width: "100%",
+              gap: "12px",
             }}
           >
             <MuiLink
@@ -54,6 +63,7 @@ export const Navbar = () => {
                 borderRadius: "12px",
                 p: "12px 53px 12px 24px",
                 cursor: "pointer",
+                opacity: location.pathname.startsWith("/flow") && !canGoBack ? 0.55 : 1,
               }}
             >
               <ArrowRight direction='down' color='rgba(255, 255, 255, 1)' />

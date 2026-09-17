@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config/env";
 import { axiosInstance } from "./axios";
 
 export interface LoginPayload {
@@ -23,6 +24,6 @@ export const authApi = {
         axiosInstance.post<AuthResponse>("/auth/signup", payload),
 
     googleAuth: () => {
-        window.location.href = "http://localhost:8090/auth/google";
+        window.location.href = `${API_BASE_URL}/auth/google`;
     },
 };

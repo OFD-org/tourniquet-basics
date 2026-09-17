@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: tourniquet-api
+    runtime: node
+    plan: free
+    region: frankfurt
+    rootDir: .
+    buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --frozen-lockfile && pnpm build:api
+    startCommand: pnpm --filter @tourniquet/api start:prod
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: PORT
+        value: "8090"
+      - key: POSTGRES_SSL
+        value: "true"
+      - key: POSTGRES_PORT
+        value: "5432"
+      - key: POSTGRES_DB
+        value: "postgres"
+      - key: POSTGRES_USER
+        value: "postgres"
+      - key: POSTGRES_HOST
+        sync: false
+      - key: POSTGRES_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_CALLBACK_URL
+        sync: false

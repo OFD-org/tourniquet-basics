@@ -46,7 +46,15 @@ export const useSignupForm = () => {
 
         try {
             await authApi.signup({ email, password });
-            navigate("/login");
+            const response = await authApi.login({ email, password });
+            const token = response.data.access_token || response.data.token;
+
+            if (token) {
+                localStorage.setItem("token", token);
+                navigate("/");
+            } else {
+                navigate("/login");
+            }
         } catch (err: any) {
             console.error("Signup error:", err);
             const msg = err?.response?.data?.message;

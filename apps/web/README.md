@@ -1,46 +1,56 @@
-# Getting Started with Create React App
+# @tourniquet/web
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React (CRA) frontend for Tourniquet training content and the assessment poll.
 
-## Available Scripts
+Part of the [tourniquet-basics](../../README.md) Turborepo. Shared rules: [Architecture](../../docs/ARCHITECTURE.md) · [Clean code](../../docs/CLEAN_CODE.md).
 
-In the project directory, you can run:
+## Stack
 
-### `npm start`
+- React 19 + TypeScript (Create React App / `react-scripts`)
+- MUI 7 + Emotion
+- Redux Toolkit (global loading)
+- React Router 7
+- axios + i18next (`uk`)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Run
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+From **repo root** (preferred):
 
-### `npm test`
+```bash
+pnpm dev:web
+# or
+pnpm dev
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+App URL: http://localhost:3000  
+API URL: set `REACT_APP_API_URL` (defaults to http://localhost:8090)
 
-### `npm run build`
+## Layout
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+src/
+  api/           # axios + authApi / pollApi
+  components/    # Navbar, loaders, route guards
+  hooks/         # useAuth, usePoll, …
+  pages/         # route screens (folder-per-page)
+  store/         # Redux slices
+  theme/         # MUI theme
+  locales/uk/    # translations
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Conventions (web)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- New screens → `src/pages/<Name>/<Name>.tsx` + `index.ts`
+- Cross-page UI → `src/components/`
+- HTTP only via `src/api/` (no axios inside presentational components)
+- Feature state in hooks/local state; Redux for cross-cutting only
+- Prefer i18n keys over hardcoded UI strings
 
-### `npm run eject`
+## Scripts
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Script | Notes |
+|--------|--------|
+| `dev` / `start` | CRA dev server |
+| `build` | Production build → `build/` |
+| `test` | CRA test runner |
+| `lint` | Placeholder — tighten when ESLint is wired at workspace level |

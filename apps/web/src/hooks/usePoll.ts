@@ -1,85 +1,142 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { pollApi } from "../api/pollApi";
-import { PollQuestion, SubmitAnswerDto } from "../api/poll.types";
+import { FlowAnswer, FlowNode, SubmitAnswerDto } from "../api/poll.types";
 
 export const usePoll = () => {
-    const [currentQuestion, setCurrentQuestion] = useState<PollQuestion | null>(null);
-    const [step, setStep] = useState<number>(0);
-    const [totalSteps, setTotalSteps] = useState<number>(0);
-    const [isCompleted, setIsCompleted] = useState<boolean>(false);
-    const [sessionId, setSessionId] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
+  const [currentNode, setCurrentNode] = useState<FlowNode | null>(null);
+  const [step, setStep] = useState(0);
+  const [totalSteps, setTotalSteps] = useState(0);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [completionMessage, setCompletionMessage] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [canGoBack, setCanGoBack] = useState(false);
+  const bootstrapped = useRef(false);
 
-    const startOrResume = useCallback(async () => {
-        try {
-            setError(null);
-            // Try to resume first
-            try {
-                const res = await pollApi.resume();
-                setCurrentQuestion(res.data.question);
-                setStep(res.data.step);
-                setTotalSteps(res.data.totalSteps);
-                localStorage.setItem("poll_token", res.data.token);
-                return;
-            } catch (err: any) {
-                // If 404, no session exists -> start new
-                if (err.response?.status !== 404 && err.response?.status !== 401) {
-                    throw err;
-                }
-            }
+  const applyPayload = (data: {
+    token?: string;
+    node: FlowNode;
+    step: number;
+    totalSteps: number;
+    canGoBack?: boolean;
+  }) => {
+    if (data.token) {
+      localStorage.setItem("poll_token", data.token);
+    }
+    setCurrentNode(data.node);
+    setStep(data.step);
+    setTotalSteps(data.totalSteps);
+    setIsCompleted(false);
+    // Prefer server flag: allows 7→6→…→1→start (intro), then stops
+    setCanGoBack(
+      typeof data.canGoBack === "boolean" ? data.canGoBack : data.step > 1
+    );
+  };
 
-            // Start new session
-            const res = await pollApi.start();
-            setCurrentQuestion(res.data.question);
-            setStep(res.data.step);
-            setTotalSteps(res.data.totalSteps);
-            localStorage.setItem("poll_token", res.data.token);
-        } catch (err: any) {
-            console.error("Failed to start/resume poll:", err);
-            setError(err.response?.data?.message || "Не вдалося завантажити опитування");
+  const startOrResume = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await pollApi.resume();
+        applyPayload(res.data);
+        return;
+      } catch (err: unknown) {
+        const status = (err as { response?: { status?: number } })?.response?.status;
+        if (status !== 404 && status !== 401) {
+          throw err;
         }
-    }, []);
+      }
 
-    const submitAnswer = useCallback(async (answer: string | string[]) => {
-        if (!currentQuestion) return;
-        const token = localStorage.getItem("poll_token");
-        if (!token) {
-            setError("Помилка: відсутній токен сесії. Оновіть сторінку.");
-            return;
+      const res = await pollApi.start();
+      applyPayload(res.data);
+    } catch (err: unknown) {
+      console.error("Failed to start/resume poll:", err);
+      const message =
+        (err as { response?: { data?: { message?: string } } })?.response?.data
+          ?.message || "Не вдалося завантажити алгоритм";
+      setError(message);
+    } finally {
+      setLoading(false);
+      bootstrapped.current = true;
+    }
+  }, []);
+
+  const submitAnswer = useCallback(
+    async (answer: FlowAnswer) => {
+      if (!currentNode || loading) return;
+      const token = localStorage.getItem("poll_token");
+      if (!token) {
+        setError("Помилка: відсутній токен сесії. Оновіть сторінку.");
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        const dto: SubmitAnswerDto = {
+          token,
+          questionId: currentNode.id,
+          answer,
+        };
+        const res = await pollApi.answer(dto);
+
+        if ("completed" in res.data && res.data.completed) {
+          setIsCompleted(true);
+          setSessionId(res.data.sessionId);
+          setCompletionMessage(res.data.message);
+          setCurrentNode(null);
+          setCanGoBack(false);
+          localStorage.removeItem("poll_token");
+        } else if ("node" in res.data) {
+          applyPayload(res.data);
         }
+      } catch (err: unknown) {
+        console.error("Failed to submit answer:", err);
+        const message =
+          (err as { response?: { data?: { message?: string } } })?.response?.data
+            ?.message || "Не вдалося зберегти відповідь";
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [currentNode, loading]
+  );
 
-        try {
-            setError(null);
-            const dto: SubmitAnswerDto = {
-                token,
-                questionId: currentQuestion.id,
-                answer,
-            };
-            const res = await pollApi.answer(dto);
-            
-            if ("completed" in res.data && res.data.completed) {
-                setIsCompleted(true);
-                setSessionId(res.data.sessionId);
-                setCurrentQuestion(null);
-            } else if ("question" in res.data) {
-                setCurrentQuestion(res.data.question);
-                setStep(res.data.step);
-                setTotalSteps(res.data.totalSteps);
-            }
-        } catch (err: any) {
-            console.error("Failed to submit answer:", err);
-            setError(err.response?.data?.message || "Не вдалося зберегти відповідь");
-        }
-    }, [currentQuestion]);
+  const goBack = useCallback(async () => {
+    if (loading || !canGoBack) return;
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await pollApi.back();
+      applyPayload(res.data);
+    } catch (err: unknown) {
+      console.error("Failed to go back:", err);
+      const message =
+        (err as { response?: { data?: { message?: string } } })?.response?.data
+          ?.message || "Не вдалося повернутися до попереднього кроку";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, canGoBack]);
 
-    return {
-        currentQuestion,
-        step,
-        totalSteps,
-        isCompleted,
-        sessionId,
-        error,
-        startOrResume,
-        submitAnswer,
-    };
+  return {
+    currentNode,
+    step,
+    totalSteps,
+    isCompleted,
+    completionMessage,
+    sessionId,
+    error,
+    loading,
+    canGoBack,
+    bootstrapped,
+    startOrResume,
+    submitAnswer,
+    goBack,
+    setError,
+  };
 };

@@ -1,9 +1,10 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config/env";
 import { store } from "../store/store";
 import { startLoading, stopLoading } from "../store/slices/loading/loadingSlice";
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:8090",
+    baseURL: API_BASE_URL,
 });
 
 axiosInstance.interceptors.request.use(

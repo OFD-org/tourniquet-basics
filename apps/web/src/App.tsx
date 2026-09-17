@@ -10,6 +10,8 @@ import { Syndrome } from "./pages/Syndrome";
 import { Wounds } from "./pages/Wounds";
 import { Flow } from "./pages/Flow";
 import { TourniquetShift } from "./pages/TourniquetShift";
+import { Conversion } from "./pages/Conversion";
+import { Sources } from "./pages/Sources";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
 import { AuthCallback } from "./pages/AuthCallback";
@@ -52,6 +54,8 @@ function App() {
                       <Route path="/syndrome" element={<Syndrome />} />
                       <Route path="/wound" element={<Wounds />} />
                       <Route path="/shift" element={<TourniquetShift />} />
+                      <Route path="/conversion" element={<Conversion />} />
+                      <Route path="/sources" element={<Sources />} />
                     </Route>
                     {/* 404 inside protected area */}
                     <Route path="*" element={<NotFound />} />

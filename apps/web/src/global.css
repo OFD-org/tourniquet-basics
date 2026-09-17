@@ -39,7 +39,8 @@ html {
 
 body {
   width: 100%;
-  background-color: rgba(189, 198, 133, 1);
+  background-color: var(--color-page, #bdc685);
+  color: var(--color-ink, #1e1e1e);
   padding-right: 0 !important;
 }
 p,

@@ -1,38 +1,52 @@
-export type QuestionType = 'single' | 'multiple' | 'text';
+export type FlowAnswer = "yes" | "no" | "ack";
 
-export interface PollOption {
-    id: string;
-    label: string;
-    value: string;
-}
+export type FlowNodeKind =
+  | "intro_accordion"
+  | "yes_no"
+  | "instruction"
+  | "instruction_list"
+  | "outcome"
+  | "success";
 
-export interface PollQuestion {
-    id: string;
-    order: number;
-    type: QuestionType;
-    title: string;
-    description?: string;
-    mediaUrl?: string;
-    options?: PollOption[];
-}
+export type FlowAccordionItem = {
+  id: string;
+  title: string;
+  body?: string;
+  mediaUrl?: string;
+  defaultExpanded?: boolean;
+};
 
-export interface QuestionPayload {
-    token?: string; // Only returned on start
-    question: PollQuestion;
-    step: number;
-    totalSteps: number;
-}
+export type FlowNode = {
+  id: string;
+  kind: FlowNodeKind;
+  label: string;
+  title?: string;
+  body?: string;
+  mediaUrl?: string;
+  items?: FlowAccordionItem[];
+  yesLabel?: string;
+  noLabel?: string;
+  completesSession?: boolean;
+};
 
-export interface CompletionPayload {
-    completed: true;
-    sessionId: string;
-    message: string;
-}
+export type FlowNodePayload = {
+  token?: string;
+  node: FlowNode;
+  step: number;
+  totalSteps: number;
+  canGoBack?: boolean;
+};
 
-export type AnswerResponse = QuestionPayload | CompletionPayload;
+export type CompletionPayload = {
+  completed: true;
+  sessionId: string;
+  message: string;
+};
 
-export interface SubmitAnswerDto {
-    token: string;
-    questionId: string;
-    answer: string | string[];
-}
+export type AnswerResponse = FlowNodePayload | CompletionPayload;
+
+export type SubmitAnswerDto = {
+  token: string;
+  questionId: string;
+  answer: FlowAnswer;
+};

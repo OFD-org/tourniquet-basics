@@ -1,7 +1,8 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { CustomList } from "../components/ui-kit/CustomList";
+import { StepNavActions } from "../components/ui-kit/StepNavActions";
 
 export const TourniquetShift = () => {
   const { t } = useTranslation();
@@ -32,6 +33,8 @@ export const TourniquetShift = () => {
       <Box
         sx={{
           flex: 1,
+          display: "flex",
+          flexDirection: "column",
           p: "24px",
           borderRadius: "12px",
           background: ({ palette }) => palette.common.white,
@@ -99,9 +102,7 @@ export const TourniquetShift = () => {
               ]}
             />
 
-            <Button variant='contained' sx={{ mt: 3 }} onClick={() => setStep(1)}>
-              {t("tourniquetShift.next")}
-            </Button>
+            <StepNavActions onNext={() => setStep(1)} />
           </>
         )}
 
@@ -124,6 +125,8 @@ export const TourniquetShift = () => {
             />
 
             <Typography sx={{ mt: 1 }}>{t("tourniquetShift.algorithm.note")}</Typography>
+
+            <StepNavActions onBack={() => setStep(0)} />
           </>
         )}
       </Box>

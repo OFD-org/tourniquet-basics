@@ -1,7 +1,7 @@
-import { PaletteOptions } from '@mui/material/styles'
+import { PaletteOptions } from "@mui/material/styles";
+import { tokens } from "../tokens";
 
-
-declare module '@mui/material/Button' {
+declare module "@mui/material/Button" {
   interface ButtonPropsVariantOverrides {
     primary: true;
     secondary: true;
@@ -12,31 +12,39 @@ declare module '@mui/material/Button' {
 
 export const palette: PaletteOptions = {
   background: {
-    paper: 'rgba(7, 5, 25, 0.8)',
-    default: 'rgba(7, 5, 25, 1)',
+    default: tokens.color.page,
+    paper: tokens.color.surface,
   },
   primary: {
-    main: 'rgba(189, 198, 133, 1)',
-    dark: 'rgba(165, 178, 86, 1)',
-    contrastText: '#000',
+    main: tokens.color.accent,
+    dark: tokens.color.accentDark,
+    contrastText: tokens.color.ink,
   },
   secondary: {
-    main: 'rgba(30, 30, 30, 1)',
-    dark: 'rgba(48, 48, 48, 1)',
-    contrastText: '#fff',
+    main: tokens.color.action,
+    dark: tokens.color.actionHover,
+    contrastText: tokens.color.inkInverse,
   },
   info: {
-    main: 'rgba(222, 227, 194, 1)',
-    dark: 'rgba(198, 206, 153, 1)',
-    contrastText: '#000',
+    main: tokens.color.pageMuted,
+    dark: tokens.color.accent,
+    contrastText: tokens.color.ink,
   },
   warning: {
-    main: 'rgba(247, 247, 247, 1)',
-    dark: 'rgba(219, 219, 219, 1)',
-    contrastText: '#000',
+    main: tokens.color.surfaceMuted,
+    dark: "#DBDBDB",
+    contrastText: tokens.color.ink,
+  },
+  text: {
+    primary: tokens.color.ink,
+    secondary: tokens.color.inkMuted,
+  },
+  error: {
+    main: tokens.color.danger,
   },
   common: {
-    white: 'rgba(255, 255, 255, 1)',
-    black: 'rgba(0, 0, 0, 1)',
+    white: tokens.color.surface,
+    black: tokens.color.ink,
   },
+  divider: tokens.color.border,
 };

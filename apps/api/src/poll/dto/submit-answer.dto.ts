@@ -1,11 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import {
-    IsString,
-    IsNotEmpty,
-    IsArray,
-    ValidateIf,
-    ArrayMinSize,
-} from "class-validator";
+import { IsIn, IsNotEmpty, IsString } from "class-validator";
 
 export class SubmitAnswerDto {
     @ApiProperty({
@@ -17,30 +11,19 @@ export class SubmitAnswerDto {
     token: string;
 
     @ApiProperty({
-        description: "ID of the question being answered (e.g. q1, q2…)",
+        description: "Current flow node id (e.g. intro_wounds, q1, s2)",
         example: "q1",
     })
     @IsString()
     @IsNotEmpty()
     questionId: string;
 
-    /**
-     * For single/text questions: a plain string.
-     * For multiple-choice: an array of selected option values.
-     */
     @ApiProperty({
-        description:
-            "Answer value — string (single/text) or string[] (multiple)",
-        oneOf: [
-            { type: "string" },
-            { type: "array", items: { type: "string" } },
-        ],
-        example: "first_responder",
+        description: "yes | no for questions; ack for intros / instructions / outcomes",
+        enum: ["yes", "no", "ack"],
+        example: "yes",
     })
-    @ValidateIf((o) => !Array.isArray(o.answer))
     @IsString()
-    @ValidateIf((o) => Array.isArray(o.answer))
-    @IsArray()
-    @ArrayMinSize(1)
-    answer: string | string[];
+    @IsIn(["yes", "no", "ack"])
+    answer: "yes" | "no" | "ack";
 }

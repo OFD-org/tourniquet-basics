@@ -8,13 +8,23 @@ import { Repository } from "typeorm";
 import { randomBytes } from "crypto";
 import { PollSession } from "./entities/poll-session.entity";
 import { PollAnswer } from "./entities/poll-answer.entity";
-import { POLL_QUESTIONS } from "./data/poll-questions.data";
 import { SubmitAnswerDto } from "./dto/submit-answer.dto";
 import {
     AnswerResponse,
+    FlowNodePayload,
     PollResultPayload,
-    QuestionPayload,
 } from "./types/poll.types";
+import {
+    FlowAnswer,
+    POLL_FLOW_NODES,
+    POLL_FLOW_START_ID,
+    getFlowNode,
+    resolveNextNodeId,
+} from "./data/poll-flow.definition";
+
+const INTERACTIVE_TOTAL = Object.values(POLL_FLOW_NODES).filter(
+    (n) => n.kind === "yes_no" || n.kind === "success"
+).length;
 
 @Injectable()
 export class PollService {
@@ -25,75 +35,57 @@ export class PollService {
         private readonly answerRepo: Repository<PollAnswer>
     ) {}
 
-    // ─── Start Poll ───────────────────────────────────────────────────────────
-
     async startPoll(
         userId: number
-    ): Promise<QuestionPayload & { token: string }> {
-        // First check if the user already has an incomplete session, if so, resume it
+    ): Promise<FlowNodePayload & { token: string }> {
         const existingSession = await this.sessionRepo.findOne({
             where: { userId, completed: false },
         });
 
         if (existingSession) {
-            return this.resumePoll(userId) as Promise<
-                QuestionPayload & { token: string }
-            >;
+            return this.resumePoll(userId);
         }
 
         const token = randomBytes(16).toString("hex");
-
         const session = this.sessionRepo.create({
             token,
             userId,
             currentStep: 0,
+            currentNodeId: POLL_FLOW_START_ID,
             completed: false,
             completedAt: null,
         });
         await this.sessionRepo.save(session);
 
-        const firstQuestion = POLL_QUESTIONS[0];
-
         return {
             token,
-            question: firstQuestion,
-            step: 1,
-            totalSteps: POLL_QUESTIONS.length,
+            ...this.toPayload(session),
         };
     }
 
-    // ─── Resume Poll ──────────────────────────────────────────────────────────
-
     async resumePoll(
         userId: number
-    ): Promise<QuestionPayload & { token: string }> {
+    ): Promise<FlowNodePayload & { token: string }> {
         const session = await this.sessionRepo.findOne({
             where: { userId, completed: false },
         });
 
         if (!session) {
             throw new NotFoundException(
-                "No active poll session found for this user."
+                "Активну сесію опитування для цього користувача не знайдено."
             );
         }
 
-        const currentQuestion = POLL_QUESTIONS[session.currentStep];
-
-        if (!currentQuestion) {
-            throw new BadRequestException(
-                "No more questions available for this session."
-            );
+        if (!session.currentNodeId) {
+            session.currentNodeId = POLL_FLOW_START_ID;
+            await this.sessionRepo.save(session);
         }
 
         return {
             token: session.token,
-            question: currentQuestion,
-            step: session.currentStep + 1,
-            totalSteps: POLL_QUESTIONS.length,
+            ...this.toPayload(session),
         };
     }
-
-    // ─── Submit Answer ────────────────────────────────────────────────────────
 
     async submitAnswer(
         dto: SubmitAnswerDto,
@@ -103,82 +95,148 @@ export class PollService {
 
         if (session.userId !== userId) {
             throw new BadRequestException(
-                "Session token does not belong to the current user."
+                "Токен сесії не належить поточному користувачу."
             );
         }
 
         if (session.completed) {
+            throw new BadRequestException("Цю сесію вже завершено.");
+        }
+
+        const currentId = session.currentNodeId || POLL_FLOW_START_ID;
+        const node = getFlowNode(currentId);
+
+        if (node.id !== dto.questionId) {
             throw new BadRequestException(
-                "This poll session is already completed."
+                `Очікувалась відповідь для вузла "${node.id}", отримано "${dto.questionId}".`
             );
         }
 
-        const expectedQuestion = POLL_QUESTIONS[session.currentStep];
+        const answer = dto.answer as FlowAnswer;
+        this.assertAnswerAllowed(node.kind, answer);
 
-        if (!expectedQuestion) {
-            throw new BadRequestException(
-                "No more questions available for this session."
-            );
-        }
-
-        // Validate the submitted questionId matches what we expect.
-        // This prevents the client from jumping steps.
-        if (expectedQuestion.id !== dto.questionId) {
-            throw new BadRequestException(
-                `Expected answer for question "${expectedQuestion.id}" (step ${session.currentStep + 1}), ` +
-                    `but received answer for "${dto.questionId}". ` +
-                    `Submit answers in order.`
-            );
-        }
-
-        // Validate that a multiple-choice question gets an array response
-        if (
-            expectedQuestion.type === "multiple" &&
-            !Array.isArray(dto.answer)
-        ) {
-            throw new BadRequestException(
-                `Question "${dto.questionId}" is multiple-choice. Send "answer" as an array.`
-            );
-        }
-
-        // Save the answer
         const pollAnswer = this.answerRepo.create({
             session,
-            questionId: expectedQuestion.id,
-            questionOrder: expectedQuestion.order,
-            answer: dto.answer,
+            questionId: node.id,
+            questionOrder: session.currentStep + 1,
+            answer,
         });
         await this.answerRepo.save(pollAnswer);
 
-        // Advance the session step
         session.currentStep += 1;
 
-        const nextQuestion = POLL_QUESTIONS[session.currentStep];
-
-        if (!nextQuestion) {
-            // All questions answered → mark as complete
+        if (node.completesSession || node.kind === "success") {
             session.completed = true;
             session.completedAt = new Date();
             await this.sessionRepo.save(session);
-
             return {
                 completed: true,
                 sessionId: session.id,
                 message:
-                    "Thank you for completing the tourniquet training assessment!",
+                    "Алгоритм завершено. Дякуємо! Слідкуйте за станом постраждалого.",
             };
         }
 
+        const nextId = resolveNextNodeId(node.id, answer);
+        if (!nextId) {
+            session.completed = true;
+            session.completedAt = new Date();
+            await this.sessionRepo.save(session);
+            return {
+                completed: true,
+                sessionId: session.id,
+                message: "Алгоритм завершено.",
+            };
+        }
+
+        session.currentNodeId = nextId;
+        await this.sessionRepo.save(session);
+
+        const nextNode = getFlowNode(nextId);
+        if (nextNode.completesSession && nextNode.kind === "success") {
+            // Serve success screen; completion happens on ack
+            return this.toPayload(session);
+        }
+
+        return this.toPayload(session);
+    }
+
+    /**
+     * Undo the latest saved answer (one step) and reopen that node.
+     * Caller may repeat until the algorithm start (intro) — never deletes the session.
+     */
+    async undoLastDecision(
+        userId: number
+    ): Promise<FlowNodePayload & { token: string }> {
+        const session = await this.sessionRepo.findOne({
+            where: { userId, completed: false },
+        });
+
+        if (!session) {
+            throw new NotFoundException(
+                "Активну сесію алгоритму не знайдено."
+            );
+        }
+
+        const answers = await this.answerRepo.find({
+            where: { session: { id: session.id } },
+            order: { questionOrder: "DESC" },
+        });
+
+        if (answers.length === 0) {
+            throw new BadRequestException(
+                "Ви вже на початку алгоритму. Для виходу натисніть «На головну»."
+            );
+        }
+
+        const last = answers[0];
+        await this.answerRepo.remove(last);
+
+        const remaining = answers.length - 1;
+        session.currentNodeId = last.questionId;
+        session.currentStep = remaining;
+        session.completed = false;
+        session.completedAt = null;
         await this.sessionRepo.save(session);
 
         return {
-            question: nextQuestion,
-            step: session.currentStep + 1, // next step is 1-based
-            totalSteps: POLL_QUESTIONS.length,
+            token: session.token,
+            ...this.toPayload(session, remaining),
         };
     }
 
-    // ─── Get Results (Admin / Preview) ────────────────────────────────────────
+    /** Lightweight status for Home CTA (Почати / Продовжити). */
+    async getStatus(userId: number): Promise<{
+        active: boolean;
+        inProgress: boolean;
+        currentNodeId: string | null;
+        answersCount: number;
+    }> {
+        const session = await this.sessionRepo.findOne({
+            where: { userId, completed: false },
+        });
+
+        if (!session) {
+            return {
+                active: false,
+                inProgress: false,
+                currentNodeId: null,
+                answersCount: 0,
+            };
+        }
+
+        const answersCount = await this.answerRepo.count({
+            where: { session: { id: session.id } },
+        });
+
+        return {
+            active: true,
+            // Any open session counts as in-progress (incl. sitting on intro)
+            inProgress: true,
+            currentNodeId: session.currentNodeId || POLL_FLOW_START_ID,
+            answersCount,
+        };
+    }
 
     async getResults(sessionId: string): Promise<PollResultPayload> {
         const session = await this.sessionRepo.findOne({
@@ -187,21 +245,18 @@ export class PollService {
         });
 
         if (!session) {
-            throw new NotFoundException(`Session "${sessionId}" not found.`);
+            throw new NotFoundException(`Сесію "${sessionId}" не знайдено.`);
         }
 
-        // Build a lookup map for question metadata
-        const questionMap = new Map(POLL_QUESTIONS.map((q) => [q.id, q]));
-
-        const answers = session.answers
+        const answers = (session.answers || [])
             .sort((a, b) => a.questionOrder - b.questionOrder)
             .map((a) => {
-                const question = questionMap.get(a.questionId);
+                const node = POLL_FLOW_NODES[a.questionId];
                 return {
                     questionId: a.questionId,
                     order: a.questionOrder,
-                    title: question?.title ?? "Unknown question",
-                    type: question?.type ?? "unknown",
+                    title: node?.title || node?.label || a.questionId,
+                    type: node?.kind ?? "unknown",
                     answer: a.answer,
                     answeredAt: a.answeredAt,
                 };
@@ -216,13 +271,45 @@ export class PollService {
         };
     }
 
-    // ─── Helpers ──────────────────────────────────────────────────────────────
+    private toPayload(
+        session: PollSession,
+        answersCount?: number
+    ): FlowNodePayload {
+        const node = getFlowNode(session.currentNodeId || POLL_FLOW_START_ID);
+        const count = answersCount ?? session.currentStep ?? 0;
+        return {
+            node,
+            step: session.currentStep + 1,
+            totalSteps: Math.max(INTERACTIVE_TOTAL, session.currentStep + 1),
+            // Repeatable one-step undo until algorithm start (intro, 0 answers)
+            canGoBack: count > 0,
+        };
+    }
+
+    private assertAnswerAllowed(
+        kind: string,
+        answer: FlowAnswer
+    ): void {
+        if (kind === "yes_no") {
+            if (answer !== "yes" && answer !== "no") {
+                throw new BadRequestException(
+                    'Для цього питання потрібна відповідь "yes" або "no".'
+                );
+            }
+            return;
+        }
+        if (answer !== "ack") {
+            throw new BadRequestException(
+                'Для цього кроку надішліть відповідь "ack" (підтвердження / Далі).'
+            );
+        }
+    }
 
     private async findSessionByToken(token: string): Promise<PollSession> {
         const session = await this.sessionRepo.findOne({ where: { token } });
         if (!session) {
             throw new NotFoundException(
-                `Poll session not found for the provided token.`
+                "Сесію опитування за наданим токеном не знайдено."
             );
         }
         return session;
