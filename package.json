@@ -1,0 +1,18 @@
+{
+  "name": "tourniquet-basics",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "dev:web": "turbo run dev --filter=@tourniquet/web",
+    "dev:api": "turbo run dev --filter=@tourniquet/api",
+    "build:web": "turbo run build --filter=@tourniquet/web",
+    "build:api": "turbo run build --filter=@tourniquet/api"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.4"
+  }
+}

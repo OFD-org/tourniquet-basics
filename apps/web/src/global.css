@@ -1,0 +1,138 @@
+@font-face {
+  font-family: "UAF Sans";
+  src: url("/fonts/UAFSans-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "UAF Sans";
+  src: url("/fonts/UAFSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "UAF Sans";
+  src: url("/fonts/UAFSans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "UAF Sans";
+  src: url("/fonts/UAFSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+* {
+  font-family: '"UAF Sans", sans-serif';
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+}
+
+body {
+  width: 100%;
+  background-color: rgba(189, 198, 133, 1);
+  padding-right: 0 !important;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+div {
+  line-height: 1;
+}
+
+br {
+  line-height: 1.5;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+a {
+  color: inherit;
+}
+
+.privacy-policy ul,
+.privacy-policy ol {
+  padding-left: 1.5rem;
+}
+
+.image-gallery-original {
+  img {
+    border-radius: 4px;
+    @media (max-width: 450px) {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 1/1 !important;
+      object-fit: cover !important;
+    }
+
+    width: 400px !important;
+    height: 400px !important;
+    object-fit: cover !important;
+  }
+}
+
+.image-gallery {
+  max-width: 400px !important;
+}
+
+.image-gallery-thumbnails-container {
+  display: flex !important;
+  gap: 16px !important;
+  margin-top: 20px !important;
+  justify-content: center !important;
+}
+
+.image-gallery-thumbnails-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.image-gallery-thumbnails {
+  display: flex !important;
+  max-width: 320px !important;
+  justify-content: center !important;
+}
+
+.image-gallery-thumbnail {
+  outline: none !important;
+  border: none !important;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+  button {
+    outline: none !important;
+    border: none !important;
+  }
+  img {
+    border-radius: 4px;
+    @media (max-width: 450px) {
+      width: 72px !important;
+      height: 72px !important;
+      object-fit: cover !important;
+    }
+
+    width: 96px !important;
+    height: 96px !important;
+    object-fit: cover !important;
+  }
+}

@@ -1,0 +1,131 @@
+/* =============================================
+   Loader – 4-block circular + shrink animation
+   Palette: info.main → info.dark → primary.main → primary.dark
+   ============================================= */
+
+/* ── Layout ── */
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  min-height: 200px;
+}
+
+.loader-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(7, 5, 25, 0.8);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1400;
+  animation: backdropFadeIn 0.2s ease forwards;
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Grid ── */
+.loader-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: inherit;
+  border-radius: 16%;
+  overflow: visible;
+}
+
+/* ── Shared block styles ── */
+.loader-block {
+  border-radius: 14%;
+  animation-name: block-pulse;
+  animation-duration: 1.8s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transform: scale(0.6);
+}
+
+/* ── Block shades (clockwise from TL, lightest → darkest) ──────────────────
+   TL  – info.main       rgba(222, 227, 194, 1)  lightest
+   TR  – info.dark       rgba(198, 206, 153, 1)
+   BR  – primary.main    rgba(189, 198, 133, 1)
+   BL  – primary.dark    rgba(165, 178, 86,  1)  deepest
+*/
+
+/* Top-left: fires first */
+.loader-block--tl {
+  background: rgba(222, 227, 194, 1);
+  box-shadow: 0 0 12px 2px
+    rgba(222, 227, 194, 0.45);
+  animation-delay: 0s;
+}
+
+/* Top-right: fires second */
+.loader-block--tr {
+  background: rgba(198, 206, 153, 1);
+  box-shadow: 0 0 12px 2px
+    rgba(198, 206, 153, 0.4);
+  animation-delay: 0.45s;
+}
+
+/* Bottom-right: fires third */
+.loader-block--br {
+  background: rgba(189, 198, 133, 1);
+  box-shadow: 0 0 12px 2px
+    rgba(189, 198, 133, 0.4);
+  animation-delay: 0.9s;
+}
+
+/* Bottom-left: fires last */
+.loader-block--bl {
+  background: rgba(165, 178, 86, 1);
+  box-shadow: 0 0 12px 2px
+    rgba(165, 178, 86, 0.45);
+  animation-delay: 1.35s;
+}
+
+/* ── Keyframes ──────────────────────────────────────────────────────────────
+   Each block pulses (scales up → down) in clockwise order:
+     TL → TR → BR → BL
+   Blocks never leave their grid cell — only size changes.
+   Animation cycle: 1.6s total, each block is "active" for 25% of the cycle.
+   Delays stagger the active window clockwise.
+*/
+
+@keyframes block-pulse {
+  /*
+    0 %  – resting (small)
+   30 %  – peak (full size)
+   55 %  – resting again
+  100 %  – resting (keeps the gap before the next cycle)
+
+  Wide rise/fall windows → smooth wave instead of a flash.
+  */
+  0% {
+    transform: scale(0.6);
+  }
+  30% {
+    transform: scale(1);
+  }
+  55% {
+    transform: scale(0.6);
+  }
+  100% {
+    transform: scale(0.6);
+  }
+}
+
+/* TL fires first  – delay 0s        */
+/* TR fires second – delay 0.45s     */
+/* BR fires third  – delay 0.90s     */
+/* BL fires last   – delay 1.35s     */

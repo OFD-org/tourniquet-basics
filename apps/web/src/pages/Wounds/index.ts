@@ -1,0 +1,1 @@
+export { Wounds } from './Wounds'
