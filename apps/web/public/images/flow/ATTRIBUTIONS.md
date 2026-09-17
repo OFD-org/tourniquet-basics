@@ -1,26 +1,27 @@
-# Image attributions (Ukrainian / Ukraine-related, freely licensed)
+# Flow image attributions (matched to step text)
 
-## Field tourniquet application (ZSU / Yavoriv CTC)
-- `ua-arm-field-tq.jpg` / `ua-yavoriv-tourniquet.jpg`
-  - Source: DVIDS 3478144 — Ukrainian 79th Air Assault Brigade, Yavoriv, 2017
-  - U.S. Army photo by Sgt. Anthony Jones (public domain)
+## step-assess-wound-tq.jpg
+- DVIDS 9903434 — simulated limb wound + high-and-tight CAT with TIME marked
+- Public domain (U.S. Air Force) — wound reassessment / time check
 
-## Leg / medical STX (Rapid Trident 2019, Ukraine)
-- `ua-leg-field-tq.jpg` / `ua-rt19-tourniquet.jpg`, `ua-rt19-med-*.jpg`
-  - Source: DVIDS 5765282 and related — Yavoriv, Ukraine, Sept 2019
-  - U.S. Army photo by Sgt. Kyle Larsen (public domain)
+## step-cut-clothing.jpg
+- DVIDS 9883797 — medic tears casualty uniform searching for bleeding (MARCH)
+- Public domain (U.S. Air National Guard)
 
-## Ukrainian combat first-aid courses
-- `ua-compression.jpg`, `ua-bandage-check.jpg`
-  - Source: DVIDS combat first aid / Ukrainian-led CLS courses at Yavoriv CTC
-  - U.S. Army photos (public domain)
+## step-inspect-bleeding.jpg
+- DVIDS 9903431 — casualty with visible bleeding + TQ; medic assessing hemorrhage
+- Public domain (U.S. Air Force)
 
-## Patriot Defence / NDU Ukraine CLS course (CC BY-SA)
-- `ua-patriot-class.jpg`, `ua-cat-closeup.jpg`, `ua-ndu-*.jpg`
-  - Wikimedia Commons — National Defence University of Ukraine combat lifesaver course
-  - Author credited on Commons file pages (CC BY-SA)
+## step-apply-tq-skin.jpg
+- DVIDS 9890949 — deliberate CAT application on thigh
+- Public domain (U.S. Air Force)
 
-## CASEVAC training (ATO zone)
-- `ua-casevac.jpg` / `ua-tactical-evac.jpg`
-  - Wikimedia Commons: Tactical care training Ukraine.jpg
-  - 8th Separate Special Forces Regiment, ATO zone — Olga Khudetska (CC BY-SA 4.0)
+## step-partner-tq.jpg
+- DVIDS 9882298 — partner tourniquet application during TCCC training
+- Public domain (U.S. Air National Guard)
+
+## Ukrainian field context (other steps)
+- ua-arm-field-tq.jpg — DVIDS 3478144, ZSU Yavoriv
+- ua-leg-field-tq.jpg — DVIDS 5765282, Rapid Trident / Yavoriv
+- ua-patriot-class.jpg / ua-cat-closeup.jpg — Wikimedia NDU / Patriot Defence (CC BY-SA)
+- ua-casevac.jpg — Wikimedia, 8th SOF ATO (CC BY-SA)
