@@ -20,6 +20,9 @@ import { PollModule } from "./poll/poll.module";
                 const sslEnabled =
                     (configService.get<string>("POSTGRES_SSL") || "")
                         .toLowerCase() === "true";
+                const family = Number(
+                    configService.get<string>("POSTGRES_FAMILY") || 0
+                );
 
                 return {
                     type: "postgres" as const,
@@ -33,6 +36,10 @@ import { PollModule } from "./poll/poll.module";
                     ssl: sslEnabled
                         ? { rejectUnauthorized: false }
                         : false,
+                    // Render free instances often cannot reach Supabase over IPv6.
+                    extra: family
+                        ? { family }
+                        : undefined,
                 };
             },
         }),
