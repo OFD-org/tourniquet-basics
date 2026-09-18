@@ -1,6 +1,7 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 import { Box, Typography, Button, CircularProgress, Alert } from "@mui/material";
 import { Link as RouterLink, useSearchParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../hooks/useAuth";
 import { usePoll } from "../../hooks/usePoll";
 import { FlowPageShell } from "../components/ui-kit/FlowPageShell";
@@ -9,10 +10,10 @@ import { YesNoChoice } from "../components/ui-kit/YesNoChoice";
 import { StepNavActions } from "../components/ui-kit/StepNavActions";
 import { tokens } from "../../theme/tokens";
 import { useFlowNavBridge } from "../../layout/Layout";
-
-const FLOW_TITLE = "Алгоритм для конверсії та переміщення турнікету";
+import { localizeFlowNode } from "../../i18n/localizeFlowNode";
 
 export const Flow: FC = () => {
+  const { t, i18n } = useTranslation();
   const { isAuthenticated } = useAuth();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -25,7 +26,6 @@ export const Flow: FC = () => {
     step,
     totalSteps,
     isCompleted,
-    completionMessage,
     error,
     loading,
     canGoBack,
@@ -34,6 +34,13 @@ export const Flow: FC = () => {
     goBack,
     setError,
   } = usePoll();
+
+  const localizedNode = useMemo(
+    () => localizeFlowNode(currentNode),
+    // Re-localize when language changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentNode, i18n.language]
+  );
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -66,30 +73,32 @@ export const Flow: FC = () => {
     return null;
   }
 
+  const flowTitle = t("algorithm");
+
   if (isCompleted) {
     return (
-      <FlowPageShell title={FLOW_TITLE}>
+      <FlowPageShell title={flowTitle}>
         <Typography variant='h3' sx={{ mb: 2 }}>
-          Алгоритм завершено
+          {t("flowUi.completedTitle")}
         </Typography>
         <Typography variant='body2' sx={{ mb: 3, lineHeight: 1.5 }}>
-          {completionMessage ||
-            "Відповіді збережено. Слідкуйте за пульсом, диханням і свідомістю постраждалого."}
+          {t("flowUi.completedDefault")}
         </Typography>
         <Button variant='secondary' component={RouterLink} to='/'>
-          На головну
+          {t("home")}
         </Button>
       </FlowPageShell>
     );
   }
 
-  const shellTitle = FLOW_TITLE;
-  const progressLabel = currentNode
-    ? `Крок ${step}${totalSteps ? ` з ~${totalSteps}` : ""} · ${currentNode.label}`
+  const progressLabel = localizedNode
+    ? totalSteps
+      ? `${t("flowUi.stepOf", { step, total: totalSteps })} · ${localizedNode.label}`
+      : `${t("flowUi.step", { step })} · ${localizedNode.label}`
     : undefined;
 
   const renderBody = () => {
-    if (!currentNode) {
+    if (!localizedNode) {
       return (
         <Box sx={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
           <CircularProgress sx={{ color: tokens.color.ink }} />
@@ -97,23 +106,23 @@ export const Flow: FC = () => {
       );
     }
 
-    switch (currentNode.kind) {
+    switch (localizedNode.kind) {
       case "intro_accordion":
       case "instruction_list":
         return (
           <>
-            {currentNode.title && currentNode.kind === "instruction_list" && (
-              <Typography variant='body1'>{currentNode.title}</Typography>
+            {localizedNode.title && localizedNode.kind === "instruction_list" && (
+              <Typography variant='body1'>{localizedNode.title}</Typography>
             )}
             <FlowAccordion
-              key={currentNode.id}
-              items={(currentNode.items || []).map((item, i) => ({
+              key={localizedNode.id}
+              items={(localizedNode.items || []).map((item, i) => ({
                 ...item,
                 defaultExpanded: item.defaultExpanded ?? i === 0,
               }))}
             />
             <Box sx={{ mt: "auto", pt: 2 }}>
-              <StepNavActions onNext={() => submitAnswer("ack")} nextLabel='Далі' />
+              <StepNavActions onNext={() => submitAnswer("ack")} nextLabel={t("next")} />
             </Box>
           </>
         );
@@ -122,7 +131,7 @@ export const Flow: FC = () => {
         return (
           <>
             <Typography variant='h3' sx={{ lineHeight: 1.3 }}>
-              {currentNode.title}
+              {localizedNode.title}
             </Typography>
             <YesNoChoice
               disabled={loading}
@@ -140,17 +149,17 @@ export const Flow: FC = () => {
       case "outcome":
         return (
           <>
-            {currentNode.title && (
-              <Typography variant='h3'>{currentNode.title}</Typography>
+            {localizedNode.title && (
+              <Typography variant='h3'>{localizedNode.title}</Typography>
             )}
             <Typography variant='body2' sx={{ lineHeight: 1.55 }}>
-              {currentNode.body}
+              {localizedNode.body}
             </Typography>
-            {currentNode.mediaUrl && (
+            {localizedNode.mediaUrl && (
               <Box
                 component='img'
-                src={currentNode.mediaUrl}
-                alt={currentNode.title || currentNode.label}
+                src={localizedNode.mediaUrl}
+                alt={localizedNode.title || localizedNode.label}
                 loading='lazy'
                 sx={{
                   width: "100%",
@@ -162,7 +171,7 @@ export const Flow: FC = () => {
               />
             )}
             <Box sx={{ mt: "auto", pt: 2 }}>
-              <StepNavActions onNext={() => submitAnswer("ack")} nextLabel='Далі' />
+              <StepNavActions onNext={() => submitAnswer("ack")} nextLabel={t("next")} />
             </Box>
           </>
         );
@@ -171,15 +180,15 @@ export const Flow: FC = () => {
         return (
           <>
             <Typography variant='h3' sx={{ color: tokens.color.ink }}>
-              {currentNode.title}
+              {localizedNode.title}
             </Typography>
             <Typography variant='body2' sx={{ lineHeight: 1.55 }}>
-              {currentNode.body}
+              {localizedNode.body}
             </Typography>
             <Box sx={{ mt: "auto", pt: 2 }}>
               <StepNavActions
                 onNext={() => submitAnswer("ack")}
-                nextLabel='Завершити'
+                nextLabel={t("finish")}
               />
             </Box>
           </>
@@ -192,17 +201,17 @@ export const Flow: FC = () => {
 
   return (
     <FlowPageShell
-      title={shellTitle}
+      title={flowTitle}
       progressLabel={progressLabel}
-      busy={loading && Boolean(currentNode)}
+      busy={loading && Boolean(localizedNode)}
       footer={null}
     >
-      {error && !currentNode && (
+      {error && !localizedNode && (
         <Alert
           severity='error'
           action={
             <Button color='inherit' size='small' onClick={() => startOrResume()}>
-              Ще раз
+              {t("retry")}
             </Button>
           }
         >

@@ -15,14 +15,10 @@ export const Sources: FC = () => {
 
       <Box sx={pageChrome.surface}>
         <Typography variant='body1' sx={{ mb: 1, lineHeight: 1.4 }}>
-          Навчальний алгоритм базується на відкритих настановах CoTCCC / TCCC та
-          матеріалах, поширюваних для підготовки в Україні. Це не заміна офіційного
-          курсу чи клінічного протоколу вашої служби.
+          {t("sourcesPage.intro")}
         </Typography>
         <Typography variant='body2' sx={{ mb: 3, color: tokens.color.inkMuted, lineHeight: 1.5 }}>
-          Перевіряйте дату редакції документа перед використанням у полі. За
-          розбіжностей пріоритет мають чинні настанови вашого командування / МОЗ /
-          CoTCCC.
+          {t("sourcesPage.disclaimer")}
         </Typography>
 
         <List sx={{ listStyleType: "decimal", pl: 3, py: 0 }}>
@@ -47,22 +43,18 @@ export const Sources: FC = () => {
               <Typography variant='caption' sx={{ color: tokens.color.inkMuted, mt: 0.5, display: "block" }}>
                 {source.org}
               </Typography>
-              {source.note && (
-                <Typography variant='body2' sx={{ color: tokens.color.inkMuted, mt: 0.5, lineHeight: 1.4 }}>
-                  {source.note}
-                </Typography>
-              )}
+              <Typography variant='body2' sx={{ color: tokens.color.inkMuted, mt: 0.5, lineHeight: 1.4 }}>
+                {t(`sourcesPage.notes.${source.id}`)}
+              </Typography>
             </ListItem>
           ))}
         </List>
 
         <Typography variant='h5' sx={{ mt: 4, mb: 1 }}>
-          Фотоілюстрації в алгоритмі
+          {t("sourcesPage.photosTitle")}
         </Typography>
         <Typography variant='body2' sx={{ mb: 2, color: tokens.color.inkMuted, lineHeight: 1.5 }}>
-          Зображення — публічні навчальні / службові фото (U.S. government works на
-          Wikimedia Commons). Вони показують техніку накладання турнікета в тренуванні;
-          реальні бойові поранення можуть виглядати інакше й важче.
+          {t("sourcesPage.photosIntro")}
         </Typography>
         <List sx={{ listStyleType: "disc", pl: 3 }}>
           {IMAGE_CREDITS.map((item) => (

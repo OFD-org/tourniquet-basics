@@ -1,9 +1,11 @@
 import React from "react";
 import { Box, TextField, Typography, Link, Alert, Snackbar } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useLoginForm } from "./hooks/useLoginForm";
 import { AuthSubmitButton } from "./components/ui-kit/AuthSubmitButton";
 import { GoogleAuthButton } from "./components/ui-kit/GoogleAuthButton";
+import { LanguageSwitcher } from "../components/LanguageSwitcher";
 
 const fieldSx = {
   "& .MuiOutlinedInput-root": {
@@ -21,6 +23,7 @@ const fieldSx = {
 };
 
 export const Login = () => {
+  const { t } = useTranslation();
   const {
     email,
     setEmail,
@@ -53,13 +56,41 @@ export const Login = () => {
           background: ({ palette }) => palette.secondary.main,
           borderRadius: "12px",
           padding: { xs: "32px 20px", sm: "48px 36px", md: "60px 48px" },
+          position: "relative",
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 1.5,
+            mb: 3,
+          }}
+        >
+          <Link
+            component={RouterLink}
+            to='/'
+            underline='none'
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              color: ({ palette }) => palette.primary.main,
+              fontWeight: 600,
+              fontSize: "14px",
+              "&:hover": { textDecoration: "underline" },
+            }}
+          >
+            ← {t("home")}
+          </Link>
+          <LanguageSwitcher variant='dark' />
+        </Box>
+
         <Typography
           variant='h2'
           sx={{ color: ({ palette }) => palette.common.white, mb: 4, textAlign: "center" }}
         >
-          Вхід
+          {t("auth.loginTitle")}
         </Typography>
 
         <Snackbar
@@ -80,7 +111,7 @@ export const Login = () => {
         <Box component='form' onSubmit={handleSubmit}>
           <TextField
             fullWidth
-            label='Email'
+            label={t("email")}
             type='email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -92,7 +123,7 @@ export const Login = () => {
 
           <TextField
             fullWidth
-            label='Пароль'
+            label={t("password")}
             type='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -106,7 +137,7 @@ export const Login = () => {
             loading={loading}
             disabled={!!emailFieldError || !!passwordFieldError}
           >
-            Увійти
+            {t("login")}
           </AuthSubmitButton>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
@@ -115,16 +146,16 @@ export const Login = () => {
               variant='body2'
               sx={{ color: "rgba(255,255,255,0.45)", whiteSpace: "nowrap" }}
             >
-              або
+              {t("or")}
             </Typography>
             <Box sx={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.15)" }} />
           </Box>
 
-          <GoogleAuthButton label='Увійти через Google' />
+          <GoogleAuthButton label={t("auth.loginGoogle")} />
 
           <Box sx={{ textAlign: "center" }}>
             <Typography variant='body2' sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
-              Немає облікового запису?{" "}
+              {t("auth.noAccount")}{" "}
               <Link
                 component={RouterLink}
                 to='/signup'
@@ -135,7 +166,7 @@ export const Login = () => {
                   "&:hover": { textDecoration: "underline" },
                 }}
               >
-                Зареєструватися
+                {t("signup")}
               </Link>
             </Typography>
           </Box>

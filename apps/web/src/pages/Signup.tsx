@@ -1,9 +1,11 @@
 import React from "react";
 import { Box, TextField, Typography, Link, Alert, Snackbar } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useSignupForm } from "./hooks/useSignupForm";
 import { AuthSubmitButton } from "./components/ui-kit/AuthSubmitButton";
 import { GoogleAuthButton } from "./components/ui-kit/GoogleAuthButton";
+import { LanguageSwitcher } from "../components/LanguageSwitcher";
 
 const fieldSx = {
   "& .MuiOutlinedInput-root": {
@@ -21,6 +23,7 @@ const fieldSx = {
 };
 
 export const Signup = () => {
+  const { t } = useTranslation();
   const {
     email,
     setEmail,
@@ -56,13 +59,41 @@ export const Signup = () => {
           background: ({ palette }) => palette.secondary.main,
           borderRadius: "12px",
           padding: { xs: "32px 20px", sm: "48px 36px", md: "60px 48px" },
+          position: "relative",
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 1.5,
+            mb: 3,
+          }}
+        >
+          <Link
+            component={RouterLink}
+            to='/'
+            underline='none'
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              color: ({ palette }) => palette.primary.main,
+              fontWeight: 600,
+              fontSize: "14px",
+              "&:hover": { textDecoration: "underline" },
+            }}
+          >
+            ← {t("home")}
+          </Link>
+          <LanguageSwitcher variant='dark' />
+        </Box>
+
         <Typography
           variant='h2'
           sx={{ color: ({ palette }) => palette.common.white, mb: 4, textAlign: "center" }}
         >
-          Реєстрація
+          {t("auth.signupTitle")}
         </Typography>
 
         <Snackbar
@@ -83,7 +114,7 @@ export const Signup = () => {
         <Box component='form' onSubmit={handleSubmit}>
           <TextField
             fullWidth
-            label='Email'
+            label={t("email")}
             type='email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -95,7 +126,7 @@ export const Signup = () => {
 
           <TextField
             fullWidth
-            label='Пароль'
+            label={t("password")}
             type='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -107,7 +138,7 @@ export const Signup = () => {
 
           <TextField
             fullWidth
-            label='Підтвердіть пароль'
+            label={t("confirmPassword")}
             type='password'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -121,7 +152,7 @@ export const Signup = () => {
             loading={loading}
             disabled={!!emailFieldError || !!passwordFieldError || !!confirmFieldError}
           >
-            Зареєструватися
+            {t("signup")}
           </AuthSubmitButton>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
@@ -130,16 +161,16 @@ export const Signup = () => {
               variant='body2'
               sx={{ color: "rgba(255,255,255,0.45)", whiteSpace: "nowrap" }}
             >
-              або
+              {t("or")}
             </Typography>
             <Box sx={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.15)" }} />
           </Box>
 
-          <GoogleAuthButton label='Зареєструватися через Google' />
+          <GoogleAuthButton label={t("auth.signupGoogle")} />
 
           <Box sx={{ textAlign: "center" }}>
             <Typography variant='body2' sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
-              Вже є обліковий запис?{" "}
+              {t("auth.hasAccount")}{" "}
               <Link
                 component={RouterLink}
                 to='/login'
@@ -150,7 +181,7 @@ export const Signup = () => {
                   "&:hover": { textDecoration: "underline" },
                 }}
               >
-                Увійти
+                {t("login")}
               </Link>
             </Typography>
           </Box>

@@ -1,0 +1,201 @@
+{
+  "intro_wounds": {
+    "label": "Wound assessment (intro)",
+    "title": "Tourniquet conversion and relocation algorithm",
+    "items": {
+      "w1": {
+        "title": "Assess for wounds",
+        "body": "Per TCCC 2024, reassess as early as possible: expose the wound and determine whether a tourniquet is truly needed. A tourniquet is indicated for life-threatening extremity hemorrhage and for any traumatic amputation. Superficial wounds without arterial bleeding are often controlled with pressure or a hemostatic dressing. If a tourniquet was applied “high and tight” over the uniform, replace it when feasible with a deliberate (targeted) tourniquet: directly on exposed skin, 5–8 cm (2–3 inches) above the bleeding site. Confirm that bleeding has stopped; if there is no amputation, check the distal pulse — it should be absent. If a tourniquet is not needed, remove it and record the time of removal on the TCCC Casualty Card."
+      },
+      "w2": {
+        "title": "Cut or remove clothing",
+        "body": "Cut or remove clothing and gear over the injury site to fully expose the skin. Inspect the limb circumferentially, including flexion creases (axilla, antecubital fossa, groin, popliteal fossa) — wounds and bleeding can be hidden under clothing. Do not leave a tourniquet over thick uniform once it can be applied on skin."
+      },
+      "w3": {
+        "title": "Inspect the skin for open wounds",
+        "body": "Systematically inspect exposed skin for open wounds, active bleeding, hematomas, and signs of penetrating injury. Lesson from Ukraine: many tourniquets are applied “just in case” — reassessment allows removal of an unnecessary tourniquet or transition to other hemorrhage-control methods, reducing the risk of ischemic complications."
+      },
+      "w4": {
+        "title": "Note changes in skin color",
+        "body": "Assess color, temperature, and capillary refill distal to the tourniquet. Prolonged application increases the risk of compartment syndrome and ischemic injury: escalating pain, tense swelling, paresthesias, weakness, pallor or mottling, and a cold limb. These are signals to urgently reconsider the need for the tourniquet / conversion and to accelerate evacuation — do not ignore these signs."
+      },
+      "w5": {
+        "title": "Check tourniquet application time",
+        "body": "Find the time on the tourniquet and on the TCCC Casualty Card. Aim for conversion (replacement) with a hemostatic or pressure dressing within <2 hours if bleeding can be controlled by other means. Do not remove a tourniquet that has been in place >6 hours without the ability for careful monitoring and laboratory support. Conversion is appropriate only if: the casualty is not in shock; the wound can be monitored continuously; and there is no traumatic amputation."
+      }
+    }
+  },
+  "q1": {
+    "label": "Is a tourniquet needed?",
+    "title": "Is a tourniquet needed?"
+  },
+  "q2": {
+    "label": "Surgical care ≤ 2 h?",
+    "title": "Is surgical wound care possible within 2 hours?"
+  },
+  "q2_yes_outcome": {
+    "label": "Leave the tourniquet",
+    "body": "Leave the effective tourniquet in place."
+  },
+  "q2_no_outcome": {
+    "label": "Remove the tourniquet",
+    "body": "Remove the tourniquet and record the application time on the Casualty Card."
+  },
+  "q3": {
+    "label": "Other hemorrhage-control methods?",
+    "title": "Can other methods of hemorrhage control be used?"
+  },
+  "q4": {
+    "label": "Delays evacuation?",
+    "title": "Does tourniquet conversion or relocation delay evacuation?"
+  },
+  "q5": {
+    "label": "Pulse without tourniquet?",
+    "title": "Does the casualty have a pulse in the extremities without a tourniquet?"
+  },
+  "q6": {
+    "label": "Altered mental status?",
+    "title": "Does the casualty have an altered level of consciousness, or is the casualty unconscious?"
+  },
+  "q7": {
+    "label": "NOT amputation + wound packing?",
+    "title": "Is the casualty’s wound NOT an amputation and suitable for wound packing?"
+  },
+  "shift_intro": {
+    "label": "Relocation intro",
+    "title": "Tourniquet conversion and relocation algorithm",
+    "items": {
+      "si1": {
+        "title": "Proceeding to the tourniquet relocation algorithm",
+        "body": "Goal of relocation: replace a “high and tight” / over-uniform tourniquet with a deliberate (targeted) tourniquet on exposed skin 5–8 cm above the bleeding site while maintaining hemorrhage control. This reduces the volume of ischemic tissue. Next — verify effectiveness, pulse, and adequate space for the new tourniquet."
+      },
+      "si2": {
+        "title": "Cut clothing at the injury site if this was not done earlier.",
+        "body": "Fully expose the wound and the skin proximal to it. Inspect flexion creases and areas under clothing folds. A deliberate tourniquet is applied only on exposed skin, not over the uniform."
+      },
+      "si3": {
+        "title": "Check whether the previously applied tourniquet is effective",
+        "body": "An effective tourniquet stops visible bleeding from the wound. If bleeding continues — further tighten the existing tourniquet or apply a second one immediately adjacent to the first before proceeding with relocation."
+      },
+      "si4": {
+        "title": "Check for a pulse in the limb distal to the tourniquet",
+        "body": "If there is no traumatic amputation, check the distal pulse. With a properly tightened tourniquet, the distal pulse should be absent. If a pulse is palpable — the tourniquet is not tight enough: tighten further or add a second tourniquet next to it."
+      }
+    }
+  },
+  "s1": {
+    "label": "Space 5–8 cm?",
+    "title": "Is there enough space to apply a deliberate tourniquet (5–8 cm above the wound)?"
+  },
+  "s1_no_outcome": {
+    "label": "No space — tighten / new",
+    "body": "Tighten the previous tourniquet or apply a new tourniquet immediately adjacent to the first tourniquet."
+  },
+  "s2": {
+    "label": "Apply deliberate + loosen hasty",
+    "items": {
+      "s2a": {
+        "title": "Place a deliberate tourniquet on exposed skin 5–8 cm above the wound and tighten it.",
+        "body": "Apply a deliberate (targeted) tourniquet directly on the skin 5–8 cm proximal to the bleeding site, avoiding joints. Tighten until bleeding stops; the distal pulse (if there is no amputation) should disappear."
+      },
+      "s2b": {
+        "title": "Slowly loosen the hasty tourniquet over at least 1 minute while watching the wound for signs of rebleeding.",
+        "body": "Slowly (at least 1 min) loosen the initial “hasty” tourniquet without removing it fully from the limb, and watch the wound carefully. Any rebleeding is a signal to immediately retighten the loosened tourniquet and/or further tighten the deliberate tourniquet."
+      }
+    }
+  },
+  "s3": {
+    "label": "Bleeding resumed?",
+    "title": "Has bleeding resumed at the wound site?"
+  },
+  "s3_no_outcome": {
+    "label": "No bleeding — tighten / retry",
+    "body": "Tighten the previously applied hasty tourniquet. Try to further tighten the deliberate tourniquet. Repeat the attempt to loosen the hasty tourniquet."
+  },
+  "s4": {
+    "label": "Slide hasty to deliberate",
+    "body": "Slide the loosened hasty tourniquet immediately adjacent to the deliberate tourniquet."
+  },
+  "s5": {
+    "label": "Pulse under tourniquet?",
+    "title": "Is there a pulse in the limb distal to the tourniquet?"
+  },
+  "s5_no_outcome": {
+    "label": "Further tighten deliberate",
+    "body": "Try to further tighten the deliberate tourniquet."
+  },
+  "s6": {
+    "label": "Document relocation",
+    "body": "Record the relocation time on the deliberate tourniquet and document the data on the casualty card."
+  },
+  "s7_success": {
+    "label": "Relocation successful",
+    "title": "Tourniquet relocation completed successfully!",
+    "body": "Monitor the casualty’s condition by checking pulse, respirations, and level of consciousness every 5 minutes, and record the data on the casualty card every 15 minutes!"
+  },
+  "q8": {
+    "label": "Monitor for rebleeding?",
+    "title": "Is it possible to monitor the wound for rebleeding?"
+  },
+  "q9": {
+    "label": "Conversion appropriate?",
+    "title": "Is conversion appropriate from tactical and medical considerations?"
+  },
+  "conv_intro_1": {
+    "label": "Conversion intro (screen 4)",
+    "title": "Tourniquet conversion and relocation algorithm",
+    "items": {
+      "ci1": {
+        "title": "Proceeding to the tourniquet conversion algorithm",
+        "body": "Conversion is replacement of a tourniquet with a hemostatic or pressure dressing. Per TCCC it is appropriate if: the casualty is not in shock; the wound can be monitored continuously for rebleeding; and there is no traumatic amputation. Aim to perform conversion within <2 hours. Do not remove a tourniquet that has been in place >6 hours without advanced monitoring and laboratory support."
+      },
+      "ci2": {
+        "title": "Cut clothing at the injury site if this was not done earlier.",
+        "body": "Fully expose the wound so the entire cavity for wound packing and the site for a pressure dressing are visible. Check adjacent skin and flexion creases for occult bleeding."
+      },
+      "ci3": {
+        "title": "Tightly pack the wound with hemostatic material.",
+        "body": "Use a CoTCCC-recommended hemostatic dressing (if unavailable — clean dry material). Tightly fill the entire wound cavity while maintaining continuous direct pressure. More than one bandage may be required."
+      },
+      "ci4": {
+        "title": "Ensure the hemostatic material protrudes 3–5 cm above the skin surface and completely fills the wound.",
+        "body": "The material must completely fill the cavity and protrude approximately 3–5 cm (1–2 inches) above skin level. If there is no protrusion — add more hemostatic material before applying a pressure dressing."
+      }
+    }
+  },
+  "conv_intro_2": {
+    "label": "Conversion intro (screen 5)",
+    "title": "Tourniquet conversion and relocation algorithm",
+    "items": {
+      "ci5": {
+        "title": "After packing the wound, continue manual pressure on the wound for at least 3 minutes.",
+        "body": "Maintain firm direct manual pressure on the packed wound for at least 3 minutes (per the hemostatic agent instructions). Do not release pressure or check the wound sooner — otherwise the clot may be disrupted."
+      },
+      "ci6": {
+        "title": "Apply a pressure dressing.",
+        "body": "Apply a pressure (elastic) dressing over the hemostatic: place the pad directly on the wound and wrap the limb tightly with pressure focused on the bleeding site. The edges of the pad should be covered by the bandage. Leave the tourniquet in place for now — do not remove it until controlled loosening."
+      },
+      "ci7": {
+        "title": "Slowly loosen the tourniquet (over 1 minute), carefully watching for resumed bleeding.",
+        "body": "Slowly (about 1 min) loosen the tourniquet while carefully watching the dressing and wound. If bleeding resumes — immediately retighten the same tourniquet (or apply a new one on the skin 5–8 cm above the wound) until bleeding stops and the distal pulse disappears."
+      },
+      "ci8": {
+        "title": "Record the pressure-dressing application time on the casualty’s body and on the Casualty Card",
+        "body": "Mark the pressure-dressing application time and the tourniquet conversion / removal time on the body (with a waterproof marker) and on the TCCC Casualty Card: site, time of application, reapplication, conversion, and removal. Then — continuous monitoring of the wound for rebleeding."
+      }
+    }
+  },
+  "q10": {
+    "label": "Bleeding after conversion?",
+    "title": "Has bleeding resumed at the tourniquet conversion site?"
+  },
+  "q11": {
+    "label": "Tighten / new tourniquet",
+    "body": "Tighten the previous tourniquet or apply a new tourniquet on the skin 5–8 cm above the wound, if possible."
+  },
+  "conv_success": {
+    "label": "Conversion successful",
+    "title": "Tourniquet conversion completed successfully!",
+    "body": "Monitor the casualty’s condition by checking pulse, respirations, and level of consciousness every 5 minutes, and record on the casualty card every 15 minutes."
+  }
+}

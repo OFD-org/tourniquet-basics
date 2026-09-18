@@ -1,4 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { ArrowRight } from "../../../../icons/ArrowRight";
 import { tokens } from "../../../../theme/tokens";
 
@@ -12,17 +13,21 @@ type YesNoChoiceProps = {
   disabled?: boolean;
 };
 
-/** Compact Так / Ні — selecting submits immediately (no extra Далі). */
+/** Compact Yes / No — selecting submits immediately (no extra Next). */
 export const YesNoChoice = ({
   value,
   onChange,
-  yesLabel = "Так",
-  noLabel = "Ні",
+  yesLabel,
+  noLabel,
   disabled = false,
 }: YesNoChoiceProps) => {
+  const { t } = useTranslation();
+  const resolvedYes = yesLabel ?? t("yes");
+  const resolvedNo = noLabel ?? t("no");
+
   const options: { value: YesNoValue; label: string }[] = [
-    { value: "yes", label: yesLabel },
-    { value: "no", label: noLabel },
+    { value: "yes", label: resolvedYes },
+    { value: "no", label: resolvedNo },
   ];
 
   return (

@@ -1,0 +1,221 @@
+{
+  "brand": "Tourniquet",
+  "or": "or",
+  "email": "Email",
+  "password": "Password",
+  "confirmPassword": "Confirm password",
+  "loading": "Loading...",
+  "finish": "Finish",
+  "retry": "Try again",
+  "home": "Home",
+  "back": "Go back",
+  "login": "Sign in",
+  "signup": "Sign up",
+  "logout": "Log out",
+  "next": "Next",
+  "previous": "Back",
+  "algorithm": "Algorithm for tourniquet conversion and relocation",
+  "start": "Start",
+  "continue": "Continue",
+  "check": "Review",
+  "syndromeHeader": "Tourniquet syndrome",
+  "woundHeader": "Wounds",
+  "shiftHeader": "Tourniquet relocation",
+  "conversionHeader": "Tourniquet conversion",
+  "source": "Sources",
+  "yes": "Yes",
+  "no": "No",
+  "auth": {
+    "loginTitle": "Sign in",
+    "signupTitle": "Sign up",
+    "loginGoogle": "Sign in with Google",
+    "signupGoogle": "Sign up with Google",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "backToLogin": "Back to sign in",
+    "errors": {
+      "invalidEmail": "Enter a valid email address",
+      "passwordMin": "Password must be at least 6 characters",
+      "passwordMismatch": "Passwords do not match",
+      "loginTokenMissing": "Sign-in error: token not received",
+      "invalidCredentials": "Incorrect email or password",
+      "signupFailed": "Could not create account. Please try again.",
+      "googleToken": "Could not get a token from Google. Please try again."
+    }
+  },
+  "flowUi": {
+    "completedTitle": "Algorithm complete",
+    "completedDefault": "Answers saved. Monitor the casualty's pulse, breathing, and consciousness.",
+    "step": "Step {{step}}",
+    "stepOf": "Step {{step}} of ~{{total}}",
+    "accordionFallback": "Details for this step are in the algorithm below or on the next screens.",
+    "errors": {
+      "loadFailed": "Could not load the algorithm",
+      "noSessionToken": "Error: session token missing. Refresh the page.",
+      "saveFailed": "Could not save the answer",
+      "backFailed": "Could not go back to the previous step"
+    }
+  },
+  "sourcesPage": {
+    "intro": "This training algorithm is based on open CoTCCC / TCCC guidelines and materials distributed for training in Ukraine. It does not replace an official course or your service's clinical protocol.",
+    "disclaimer": "Check the document revision date before field use. If there is a conflict, follow your command / MoH / CoTCCC current guidelines.",
+    "photosTitle": "Photos in the algorithm",
+    "photosIntro": "Images are public training / service photos (U.S. government works on Wikimedia Commons). They show tourniquet technique in training; real combat wounds may look different and more severe.",
+    "notes": {
+      "tccc-ua": "Official translation / distribution of CoTCCC guidelines for Ukraine.",
+      "tccc-ua-home": "Current skill cards and guidelines in Ukrainian / English.",
+      "skill-32": "Tourniquet conversion skill card (UA/EN PDF).",
+      "jsom-2024": "Peer-reviewed publication of the CoTCCC guidelines update (January 2024).",
+      "jsom-pdf": "Full guidelines text: reassessment, conversion <2 h, limits >6 h.",
+      "butler-ukraine": "Analysis of tourniquet use in Russia's war against Ukraine; reassessing necessity.",
+      "pmc-conversion": "Review of indications for tourniquet conversion / replacement in the prehospital setting.",
+      "naemt-tccc": "Official TCCC courses aligned with DHA-JTS / CoTCCC."
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This address does not exist or has been moved.",
+    "goBack": "← Back",
+    "home": "Home"
+  },
+  "conversion": {
+    "title": "Tourniquet conversion",
+    "intro": "Tourniquet conversion after 2 hours can be performed, but it is a higher-risk situation and must be done with extreme caution. Key points:",
+    "risks": [
+      {
+        "title": "1. Increased risk of systemic toxicity:",
+        "text": "After a prolonged period of compression (more than 2 hours), restoring blood flow can cause serious metabolic disturbances that affect the whole body (kidney and heart injury)."
+      },
+      {
+        "title": "2. Mandatory medical oversight:",
+        "items": [
+          "Conversion after 2 hours should be performed only in the presence of qualified medical personnel who can provide necessary care.",
+          "Be prepared for possible complications, including having anti-shock medications and equipment ready."
+        ]
+      },
+      {
+        "title": "3. Stepwise approach:",
+        "items": [
+          "After 2 hours, any loosening of the tourniquet must be gradual, with continuous monitoring of the limb.",
+          "Checking for active bleeding after releasing the tourniquet is a mandatory step."
+        ]
+      },
+      {
+        "title": "4. Decision not to release the tourniquet:",
+        "text": "If the tourniquet has been in place for more than 6 hours, in many cases the limb is lost due to tissue death. In that case, do not loosen the tourniquet until surgical care is available."
+      }
+    ],
+    "algorithm": {
+      "title": "Tourniquet conversion procedure:",
+      "steps": [
+        "Cut clothing at the wound site.",
+        "Prepare hemostatic material.",
+        "Pack the wound tightly with hemostatic material.",
+        "Ensure the hemostatic material protrudes 3–5 cm above the skin surface.",
+        "After packing the wound, continue manual pressure for at least 3 minutes.",
+        "Apply a pressure dressing.",
+        "Slowly loosen the tourniquet (over one minute), carefully watching for bleeding.",
+        "Record the time the pressure dressing was applied.",
+        "Document in the casualty card."
+      ],
+      "note": "If packing and the pressure dressing do not stop the bleeding, re-tighten the tourniquet or take steps to replace a tourniquet applied over clothing with a deliberate tourniquet. If the wound does not require packing, you may proceed directly to a pressure dressing."
+    }
+  },
+  "syndrome": {
+    "title": "Tourniquet syndrome",
+    "description": " is a complex of pathological changes that occur in response to circumferential compression of a limb with improper tourniquet use, and is characterized by disorders that can lead to necrosis.",
+    "manifestationsTitle": "Signs",
+    "manifestations": [
+      "Pain and swelling: Severe pain and swelling at the tourniquet application site.",
+      "Skin color changes: pallor, cyanosis, or mottling.",
+      "Circulatory impairment: Tissue ischemia from prolonged compression.",
+      "Neurological symptoms: Sensory loss, weakness, or paralysis of the limb due to nerve injury."
+    ],
+    "consequencesTitle": "Consequences of tourniquet syndrome",
+    "consequencesDescr": "The main complications from tourniquet use, in order of frequency, include:",
+    "consequences": [
+      "Amputation",
+      "Neurological deficits",
+      "Compartment syndrome",
+      "Venous and/or arterial thrombosis",
+      "Muscle necrosis",
+      "Acute kidney injury",
+      "Limb stiffness and joint contracture/paralysis"
+    ],
+    "consequenceNote": "These complications depend on how long the tourniquet has been in place."
+  },
+  "wounds": {
+    "title": "Wound assessment",
+    "term": "Wound",
+    "definition": " is a disruption of the anatomical integrity of the skin, mucous membranes, or body tissues that may be accompanied by pain, bleeding, inflammation, or other physiological responses.",
+    "searchTitle": "Finding wounds",
+    "visualInspection": "Visual inspection: Examine the limbs for visible wounds, bleeding, and other injuries.",
+    "necessityTitle": "Appropriateness of tourniquet use",
+    "necessityCheck": "Determine whether already applied tourniquets are still needed: Confirm whether the limb distal to the tourniquet is actually injured, if this was not done earlier.",
+    "evaluationTitle": "Assessing for wounds",
+    "evaluation": [
+      "Cut or remove clothing to expose the skin.",
+      "Visual inspection of the skin:",
+      "Look for open wounds,",
+      "Note skin color changes (bruising, redness).",
+      "Look for signs of compartment syndrome.",
+      "Pay special attention to flexed areas (knee, elbow), where wounds may be hidden.",
+      "Check the tourniquet application time."
+    ],
+    "removalInstruction": "If assessment shows the tourniquet was not needed in this situation, remove it and record the removal time on the casualty card.",
+    "generalNote": "There are no exact universal criteria that always determine whether a tourniquet is needed. Typical injuries that will require a tourniquet at later stages include certain visible trauma such as amputations and deep wounds with arterial injury, while more superficial injuries without arterial damage can often be controlled with less aggressive measures. Sometimes wound severity cannot be clearly judged from appearance alone."
+  },
+  "tourniquetShift": {
+    "title": {
+      "highlight1": "Tourniquet",
+      "rest": "relocation",
+      "highlight2": ""
+    },
+    "intro": {
+      "description": "Tourniquet relocation is replacing a high-and-tight tourniquet, or one applied over clothing, with a deliberate (targeted) tourniquet to reduce the effect of the tourniquet on healthy limb tissue.",
+      "indications": {
+        "title": "Indications for tourniquet relocation:",
+        "list": [
+          "Tourniquet applied over the uniform;",
+          "Tourniquet applied too high (more than 8 cm above the wound);",
+          "More than two hours until surgical care."
+        ]
+      },
+      "contraindications": {
+        "title": "Contraindications to tourniquet relocation:",
+        "list": [
+          "Tourniquet has been in place for more than 2 hours;",
+          "Tactical conditions do not allow it",
+          "Tourniquet relocation delays evacuation.",
+          "Relocation with amputation is possible, but depends on the specific situation and the patient's condition."
+        ]
+      },
+      "keyPoints": {
+        "title": "Key points to consider:",
+        "list": [
+          "Tourniquet application time: If the tourniquet was applied less than 2 hours ago, relocation may be safe under appropriate medical oversight.",
+          "Amputation site: The tourniquet is usually placed 5–6 cm above the amputation site to effectively stop bleeding.",
+          "Medical oversight: Tourniquet relocation should be performed only by qualified medical personnel who can assess the limb, establish IV access, and provide necessary fluid therapy.",
+          "Risks: If the tourniquet has been in place for more than 6 hours, relocation may be dangerous due to the risk of acute ischemia and other complications."
+        ]
+      }
+    },
+    "algorithm": {
+      "title": "Tourniquet relocation procedure:",
+      "steps": [
+        "Cut clothing at the wound site and inspect the source of bleeding.",
+        "Check the previously applied tourniquet for effective hemorrhage control and proximity to the bleeding source.",
+        "Check for a distal pulse.",
+        "Place a deliberate tourniquet on bare skin, 5–8 cm above the wound, and tighten it.",
+        "Then slowly loosen the hasty tourniquet over at least one minute, watching the wound for signs of re-bleeding.",
+        "If bleeding does not resume, slide the hasty tourniquet down to the newly applied deliberate tourniquet. Recheck for a distal pulse — it should be absent.",
+        "Record the relocation time on the tourniquet.",
+        "Document the relocation on the casualty card.",
+        "If bleeding resumes or a distal pulse appears, re-tighten the hasty tourniquet and confirm bleeding is controlled. Then tighten the deliberate tourniquet further and attempt relocation again."
+      ],
+      "note": "If bleeding resumes or a distal pulse appears, re-tighten the hasty tourniquet and confirm bleeding is controlled. Then tighten the deliberate tourniquet further and attempt relocation again."
+    },
+    "next": "Next",
+    "back": "Back"
+  }
+}

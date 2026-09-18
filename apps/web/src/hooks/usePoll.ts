@@ -1,8 +1,10 @@
 import { useState, useCallback, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { pollApi } from "../api/pollApi";
 import { FlowAnswer, FlowNode, SubmitAnswerDto } from "../api/poll.types";
 
 export const usePoll = () => {
+  const { t, i18n } = useTranslation();
   const [currentNode, setCurrentNode] = useState<FlowNode | null>(null);
   const [step, setStep] = useState(0);
   const [totalSteps, setTotalSteps] = useState(0);
@@ -28,7 +30,6 @@ export const usePoll = () => {
     setStep(data.step);
     setTotalSteps(data.totalSteps);
     setIsCompleted(false);
-    // Prefer server flag: allows 7→6→…→1→start (intro), then stops
     setCanGoBack(
       typeof data.canGoBack === "boolean" ? data.canGoBack : data.step > 1
     );
@@ -55,20 +56,20 @@ export const usePoll = () => {
       console.error("Failed to start/resume poll:", err);
       const message =
         (err as { response?: { data?: { message?: string } } })?.response?.data
-          ?.message || "Не вдалося завантажити алгоритм";
+          ?.message || t("flowUi.errors.loadFailed");
       setError(message);
     } finally {
       setLoading(false);
       bootstrapped.current = true;
     }
-  }, []);
+  }, [t]);
 
   const submitAnswer = useCallback(
     async (answer: FlowAnswer) => {
       if (!currentNode || loading) return;
       const token = localStorage.getItem("poll_token");
       if (!token) {
-        setError("Помилка: відсутній токен сесії. Оновіть сторінку.");
+        setError(t("flowUi.errors.noSessionToken"));
         return;
       }
 
@@ -85,7 +86,10 @@ export const usePoll = () => {
         if ("completed" in res.data && res.data.completed) {
           setIsCompleted(true);
           setSessionId(res.data.sessionId);
-          setCompletionMessage(res.data.message);
+          const lang = (i18n.resolvedLanguage || i18n.language || "uk").split("-")[0];
+          setCompletionMessage(
+            lang === "en" ? t("flowUi.completedDefault") : res.data.message
+          );
           setCurrentNode(null);
           setCanGoBack(false);
           localStorage.removeItem("poll_token");
@@ -96,13 +100,13 @@ export const usePoll = () => {
         console.error("Failed to submit answer:", err);
         const message =
           (err as { response?: { data?: { message?: string } } })?.response?.data
-            ?.message || "Не вдалося зберегти відповідь";
+            ?.message || t("flowUi.errors.saveFailed");
         setError(message);
       } finally {
         setLoading(false);
       }
     },
-    [currentNode, loading]
+    [currentNode, loading, t, i18n.language, i18n.resolvedLanguage]
   );
 
   const goBack = useCallback(async () => {
@@ -116,12 +120,12 @@ export const usePoll = () => {
       console.error("Failed to go back:", err);
       const message =
         (err as { response?: { data?: { message?: string } } })?.response?.data
-          ?.message || "Не вдалося повернутися до попереднього кроку";
+          ?.message || t("flowUi.errors.backFailed");
       setError(message);
     } finally {
       setLoading(false);
     }
-  }, [loading, canGoBack]);
+  }, [loading, canGoBack, t]);
 
   return {
     currentNode,

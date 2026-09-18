@@ -6,6 +6,7 @@ import { features } from "../../constants/constants";
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthNavButtons } from "../components/ui-kit/AuthNavButtons";
+import { LanguageSwitcher } from "../../components/LanguageSwitcher";
 import { useAuth } from "../../hooks/useAuth";
 import { pollApi } from "../../api/pollApi";
 import { tokens } from "../../theme/tokens";
@@ -58,7 +59,7 @@ export const Home: FC = () => {
           <Box
             component='img'
             src='/brand/logo.png'
-            alt='Турнікет'
+            alt={t("brand")}
             sx={{
               width: { xs: 40, md: 48 },
               height: { xs: 40, md: 48 },
@@ -66,10 +67,13 @@ export const Home: FC = () => {
             }}
           />
           <Typography variant='h5' sx={{ color: ({ palette }) => palette.secondary.main }}>
-            Турнікет
+            {t("brand")}
           </Typography>
         </Box>
-        <AuthNavButtons redirectAfterLogin='/flow?resume=true' />
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexWrap: "wrap" }}>
+          <LanguageSwitcher />
+          <AuthNavButtons redirectAfterLogin='/flow?resume=true' />
+        </Box>
       </Box>
 
       <Box

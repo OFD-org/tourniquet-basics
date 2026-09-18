@@ -23,7 +23,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalLoader />
-      <Suspense fallback='Loading...'>
+      <Suspense fallback={<Box sx={{ p: 3 }}>Loading...</Box>}>
 
         <BrowserRouter>
           <Routes>

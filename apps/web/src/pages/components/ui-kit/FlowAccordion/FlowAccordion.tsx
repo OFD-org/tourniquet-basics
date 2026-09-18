@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ArrowRight } from "../../../../icons/ArrowRight";
 import { tokens } from "../../../../theme/tokens";
 
@@ -23,6 +24,7 @@ type FlowAccordionProps = {
 };
 
 export const FlowAccordion = ({ items, multi = true }: FlowAccordionProps) => {
+  const { t } = useTranslation();
   const initiallyExpanded = items.filter((i) => i.defaultExpanded).map((i) => i.id);
   const [expanded, setExpanded] = useState<string[]>(
     initiallyExpanded.length ? initiallyExpanded : items[0] ? [items[0].id] : []
@@ -96,7 +98,7 @@ export const FlowAccordion = ({ items, multi = true }: FlowAccordionProps) => {
                 >
                   {item.body?.trim()
                     ? item.body
-                    : "Деталі цього кроку наведено в алгоритмі нижче або на наступних екранах."}
+                    : t("flowUi.accordionFallback")}
                 </Typography>
                 {item.mediaUrl && (
                   <Box
