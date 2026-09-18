@@ -103,18 +103,40 @@ export const Home: FC = () => {
 
       <Box
         sx={{
-          display: "grid",
+          display: { xs: "flex", sm: "grid" },
           gridTemplateColumns: {
-            xs: "1fr",
             sm: "1fr 1fr",
             lg: "repeat(4, 1fr)",
           },
           gap: { xs: "12px", md: "20px" },
           minHeight: { lg: "268px" },
+          overflowX: { xs: "auto", sm: "visible" },
+          scrollSnapType: { xs: "x mandatory", sm: "none" },
+          WebkitOverflowScrolling: "touch",
+          mx: { xs: -0.5, sm: 0 },
+          px: { xs: 0.5, sm: 0 },
+          pb: { xs: 1, sm: 0 },
+          "&::-webkit-scrollbar": {
+            height: 6,
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(30,30,30,0.25)",
+            borderRadius: 8,
+          },
         }}
       >
         {features.map((feature) => (
-          <FeatureCard key={feature.titleKey} titleKey={feature.titleKey} link={feature.link} />
+          <Box
+            key={feature.titleKey}
+            sx={{
+              flex: { xs: "0 0 auto", sm: "unset" },
+              width: { xs: "min(78vw, 280px)", sm: "auto" },
+              scrollSnapAlign: { xs: "start", sm: "unset" },
+              minHeight: { sm: "100%" },
+            }}
+          >
+            <FeatureCard titleKey={feature.titleKey} link={feature.link} />
+          </Box>
         ))}
       </Box>
 

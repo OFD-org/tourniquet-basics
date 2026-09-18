@@ -6,11 +6,13 @@ import { useFlowNavBridge } from "../../layout/Layout";
 import { tokens } from "../../theme/tokens";
 
 const navLinkSx = {
+  flex: "0 0 auto",
   color: "common.black",
   bgcolor: "info.main",
   p: { xs: "10px 14px", sm: "12px 18px", md: "14px 24px" },
   borderRadius: tokens.radius.md,
   whiteSpace: "nowrap" as const,
+  scrollSnapAlign: "start",
   transition: `transform ${tokens.motion.durationFast} ${tokens.motion.ease}, opacity ${tokens.motion.durationFast} ${tokens.motion.ease}`,
   "&:active": { transform: "scale(0.98)" },
 };
@@ -47,18 +49,19 @@ export const Navbar = () => {
             p: 0,
             minHeight: "unset !important",
             display: "flex",
-            flexWrap: "wrap",
-            gap: { xs: "8px", sm: "10px" },
-            alignItems: "stretch",
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: { xs: "stretch", md: "center" },
+            gap: { xs: "10px", md: "12px" },
           }}
         >
           <MuiLink
             underline='none'
             onClick={handleBack}
             sx={{
-              display: "flex",
+              display: "inline-flex",
               alignItems: "center",
               gap: "8px",
+              alignSelf: { xs: "flex-start", md: "center" },
               color: ({ palette }) => palette.common.white,
               background: ({ palette }) => palette.secondary.main,
               borderRadius: tokens.radius.md,
@@ -78,10 +81,21 @@ export const Navbar = () => {
           <Box
             sx={{
               display: "flex",
-              flexWrap: "wrap",
+              flexWrap: "nowrap",
               gap: { xs: "8px", sm: "10px" },
               flex: "1 1 auto",
               minWidth: 0,
+              overflowX: "auto",
+              scrollSnapType: "x mandatory",
+              WebkitOverflowScrolling: "touch",
+              pb: { xs: 0.5, md: 0 },
+              "&::-webkit-scrollbar": {
+                height: 6,
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(30,30,30,0.25)",
+                borderRadius: 8,
+              },
             }}
           >
             {links.map((item) => (
