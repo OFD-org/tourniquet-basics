@@ -3,29 +3,15 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CustomList } from "../components/ui-kit/CustomList";
 import { StepNavActions } from "../components/ui-kit/StepNavActions";
+import { pageChrome } from "../../theme/tokens";
 
 export const Conversion = () => {
   const { t } = useTranslation();
   const [step, setStep] = useState(0);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-        minHeight: "calc(100vh - 148px)",
-      }}
-    >
-      <Typography
-        variant='overline'
-        sx={{
-          p: "24px 40px",
-          borderRadius: "12px",
-          background: ({ palette }) => palette.secondary.main,
-          color: ({ palette }) => palette.common.white,
-        }}
-      >
+    <Box className='page-enter' sx={pageChrome.stack}>
+      <Typography variant='overline' sx={pageChrome.title}>
         {t("conversion.title")}
       </Typography>
 
@@ -34,9 +20,7 @@ export const Conversion = () => {
           flex: 1,
           display: "flex",
           flexDirection: "column",
-          p: "24px",
-          borderRadius: "12px",
-          background: ({ palette }) => palette.common.white,
+          ...pageChrome.surface,
         }}
       >
         {step === 0 && (

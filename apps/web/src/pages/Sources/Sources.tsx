@@ -2,39 +2,18 @@ import { Box, Typography, Link as MuiLink, List, ListItem } from "@mui/material"
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { SOURCES, IMAGE_CREDITS } from "../../constants/sources";
-import { tokens } from "../../theme/tokens";
+import { pageChrome, tokens } from "../../theme/tokens";
 
 export const Sources: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-        minHeight: "calc(100vh - 148px)",
-      }}
-    >
-      <Typography
-        variant='overline'
-        sx={{
-          p: "24px 40px",
-          borderRadius: tokens.radius.md,
-          background: tokens.color.action,
-          color: tokens.color.inkInverse,
-        }}
-      >
+    <Box className='page-enter' sx={pageChrome.stack}>
+      <Typography variant='overline' sx={pageChrome.title}>
         {t("source")}
       </Typography>
 
-      <Box
-        sx={{
-          p: { xs: "20px", md: "28px" },
-          borderRadius: tokens.radius.md,
-          background: tokens.color.surface,
-        }}
-      >
+      <Box sx={pageChrome.surface}>
         <Typography variant='body1' sx={{ mb: 1, lineHeight: 1.4 }}>
           Навчальний алгоритм базується на відкритих настановах CoTCCC / TCCC та
           матеріалах, поширюваних для підготовки в Україні. Це не заміна офіційного

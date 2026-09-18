@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { ReactNode } from "react";
-import { tokens } from "../../../../theme/tokens";
+import { pageChrome, tokens } from "../../../../theme/tokens";
 
 type FlowPageShellProps = {
   title: string;
@@ -19,23 +19,15 @@ export const FlowPageShell = ({
   busy = false,
 }: FlowPageShellProps) => (
   <Box
+    className='page-enter'
     sx={{
       display: "flex",
       flexDirection: "column",
-      gap: tokens.space.pageGap,
+      gap: { xs: "14px", md: tokens.space.pageGap },
       width: "100%",
     }}
   >
-    <Typography
-      variant='overline'
-      sx={{
-        p: "20px 32px",
-        borderRadius: tokens.radius.md,
-        background: tokens.color.action,
-        color: tokens.color.inkInverse,
-        width: "100%",
-      }}
-    >
+    <Typography variant='overline' sx={pageChrome.title}>
       {title}
     </Typography>
 
@@ -45,12 +37,10 @@ export const FlowPageShell = ({
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        p: { xs: "20px", md: "28px" },
-        borderRadius: tokens.radius.md,
-        background: tokens.color.surface,
+        ...pageChrome.surface,
         color: tokens.color.ink,
         width: "100%",
-        minHeight: { xs: "45vh", md: "50vh" },
+        minHeight: { xs: "42vh", md: "50vh" },
       }}
     >
       {progressLabel && (
@@ -69,7 +59,7 @@ export const FlowPageShell = ({
           flexDirection: "column",
           gap: 2,
           opacity: busy ? 0.45 : 1,
-          transition: "opacity 160ms ease",
+          transition: `opacity ${tokens.motion.durationFast} ${tokens.motion.ease}`,
           pointerEvents: busy ? "none" : "auto",
         }}
       >
@@ -90,6 +80,7 @@ export const FlowPageShell = ({
             borderRadius: tokens.radius.md,
             bgcolor: "rgba(255,255,255,0.45)",
             zIndex: 2,
+            animation: "fadeIn 160ms var(--ease-out, ease)",
           }}
         >
           <CircularProgress size={32} sx={{ color: tokens.color.ink }} />

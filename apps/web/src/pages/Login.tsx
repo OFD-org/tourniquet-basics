@@ -42,16 +42,17 @@ export const Login = () => {
         alignItems: "center",
         justifyContent: "center",
         background: ({ palette }) => palette.primary.main,
-        padding: "40px 20px",
+        padding: { xs: "24px 16px", sm: "40px 20px" },
       }}
     >
       <Box
+        className='page-enter'
         sx={{
           width: "100%",
           maxWidth: "480px",
           background: ({ palette }) => palette.secondary.main,
           borderRadius: "12px",
-          padding: { xs: "40px 24px", sm: "60px 48px" },
+          padding: { xs: "32px 20px", sm: "48px 36px", md: "60px 48px" },
         }}
       >
         <Typography

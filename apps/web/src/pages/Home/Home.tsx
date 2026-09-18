@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthNavButtons } from "../components/ui-kit/AuthNavButtons";
 import { useAuth } from "../../hooks/useAuth";
 import { pollApi } from "../../api/pollApi";
+import { tokens } from "../../theme/tokens";
 
 export const Home: FC = () => {
   const { t } = useTranslation();
@@ -35,14 +36,22 @@ export const Home: FC = () => {
   };
 
   return (
-    <Box sx={{ minHeight: "calc(100vh - 80px)" }}>
+    <Box
+      className='page-enter'
+      sx={{
+        minHeight: { xs: "auto", md: "calc(100vh - 80px)" },
+        display: "flex",
+        flexDirection: "column",
+        gap: { xs: "14px", md: "20px" },
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: "20px",
           gap: 2,
+          flexWrap: "wrap",
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
@@ -50,7 +59,11 @@ export const Home: FC = () => {
             component='img'
             src='/brand/logo.png'
             alt='Турнікет'
-            sx={{ width: 48, height: 48, borderRadius: "10px" }}
+            sx={{
+              width: { xs: 40, md: 48 },
+              height: { xs: 40, md: 48 },
+              borderRadius: "10px",
+            }}
           />
           <Typography variant='h5' sx={{ color: ({ palette }) => palette.secondary.main }}>
             Турнікет
@@ -61,9 +74,10 @@ export const Home: FC = () => {
 
       <Box
         sx={{
-          p: "160px 40px",
+          p: { xs: "48px 20px", sm: "80px 32px", md: "120px 40px", lg: "160px 40px" },
           background: ({ palette }) => palette.secondary.main,
-          borderRadius: "12px",
+          borderRadius: tokens.radius.md,
+          transition: `transform ${tokens.motion.durationSlow} ${tokens.motion.easeOut}`,
         }}
       >
         <Typography
@@ -72,7 +86,11 @@ export const Home: FC = () => {
         >
           {t("algorithm")}
         </Typography>
-        <Button variant='primary' onClick={handleStart} sx={{ mt: "62px", textTransform: "none" }}>
+        <Button
+          variant='primary'
+          onClick={handleStart}
+          sx={{ mt: { xs: "28px", md: "48px", lg: "62px" }, textTransform: "none" }}
+        >
           <Typography
             variant='button'
             sx={{ color: ({ palette }) => palette.secondary.main, alignSelf: "end" }}
@@ -86,10 +104,13 @@ export const Home: FC = () => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "20px",
-          mt: "20px",
-          minHeight: "268px",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "1fr 1fr",
+            lg: "repeat(4, 1fr)",
+          },
+          gap: { xs: "12px", md: "20px" },
+          minHeight: { lg: "268px" },
         }}
       >
         {features.map((feature) => (
@@ -104,8 +125,7 @@ export const Home: FC = () => {
         sx={{
           display: "flex",
           justifyContent: "end",
-          mt: "20px",
-          p: "31px 24px",
+          p: { xs: "20px 18px", md: "28px 24px" },
           textTransform: "none",
         }}
       >

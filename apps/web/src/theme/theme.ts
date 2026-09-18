@@ -27,10 +27,20 @@ export const theme = createTheme({
           "--color-action": tokens.color.action,
           "--color-accent": tokens.color.accent,
           "--radius-md": tokens.radius.md,
+          "--ease-out": tokens.motion.easeOut,
+          "--ease-snap": tokens.motion.ease,
+          "--duration": tokens.motion.duration,
         },
         body: {
           backgroundColor: tokens.color.page,
           color: tokens.color.ink,
+        },
+        "@media (prefers-reduced-motion: reduce)": {
+          "*, *::before, *::after": {
+            animationDuration: "0.01ms !important",
+            animationIterationCount: "1 !important",
+            transitionDuration: "0.01ms !important",
+          },
         },
       },
     },
@@ -42,6 +52,10 @@ export const theme = createTheme({
         root: {
           textTransform: "none",
           fontWeight: 600,
+          transition: `transform ${tokens.motion.durationFast} ${tokens.motion.ease}, background-color ${tokens.motion.duration} ${tokens.motion.ease}, opacity ${tokens.motion.durationFast} ${tokens.motion.ease}`,
+          "&:active": {
+            transform: "scale(0.98)",
+          },
         },
       },
       variants: [
@@ -51,7 +65,10 @@ export const theme = createTheme({
             display: "flex",
             gap: "10px",
             borderRadius: tokens.radius.md,
-            padding: "16px 29px",
+            padding: "14px 22px",
+            [baseTheme.breakpoints.up("md")]: {
+              padding: "16px 29px",
+            },
             backgroundColor: baseTheme.palette.primary.main,
             color: baseTheme.palette.primary.contrastText,
             "&:hover": {
@@ -69,7 +86,10 @@ export const theme = createTheme({
             display: "flex",
             gap: "10px",
             borderRadius: tokens.radius.md,
-            padding: "16px 29px",
+            padding: "14px 22px",
+            [baseTheme.breakpoints.up("md")]: {
+              padding: "16px 29px",
+            },
             backgroundColor: baseTheme.palette.secondary.main,
             color: baseTheme.palette.secondary.contrastText,
             "&:hover": {
@@ -87,7 +107,10 @@ export const theme = createTheme({
             display: "flex",
             gap: "10px",
             borderRadius: tokens.radius.md,
-            padding: "16px 29px",
+            padding: "14px 22px",
+            [baseTheme.breakpoints.up("md")]: {
+              padding: "16px 29px",
+            },
             backgroundColor: baseTheme.palette.info.main,
             color: baseTheme.palette.info.contrastText,
             "&:hover": {
@@ -101,7 +124,10 @@ export const theme = createTheme({
             display: "flex",
             gap: "10px",
             borderRadius: tokens.radius.md,
-            padding: "16px 29px",
+            padding: "14px 22px",
+            [baseTheme.breakpoints.up("md")]: {
+              padding: "16px 29px",
+            },
             backgroundColor: baseTheme.palette.warning.main,
             color: baseTheme.palette.warning.contrastText,
             "&:hover": {
@@ -118,6 +144,7 @@ export const theme = createTheme({
           borderRadius: `${tokens.radius.md} !important`,
           boxShadow: "none",
           border: `1px solid ${tokens.color.border}`,
+          transition: `border-color ${tokens.motion.duration} ${tokens.motion.ease}`,
           "&:before": { display: "none" },
           "&.Mui-expanded": {
             margin: 0,
@@ -128,10 +155,10 @@ export const theme = createTheme({
     MuiAccordionSummary: {
       styleOverrides: {
         root: {
-          minHeight: 64,
-          padding: "12px 20px",
+          minHeight: 56,
+          padding: "10px 16px",
           "&.Mui-expanded": {
-            minHeight: 64,
+            minHeight: 56,
           },
         },
         content: {
@@ -140,13 +167,23 @@ export const theme = createTheme({
             margin: "8px 0",
           },
         },
+        expandIconWrapper: {
+          transition: `transform ${tokens.motion.duration} ${tokens.motion.ease}`,
+        },
       },
     },
     MuiAccordionDetails: {
       styleOverrides: {
         root: {
-          padding: "0 20px 20px",
+          padding: "0 16px 16px",
           color: tokens.color.inkMuted,
+        },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          transition: `opacity ${tokens.motion.durationFast} ${tokens.motion.ease}, transform ${tokens.motion.durationFast} ${tokens.motion.ease}`,
         },
       },
     },

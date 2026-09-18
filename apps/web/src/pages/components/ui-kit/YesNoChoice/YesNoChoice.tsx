@@ -29,9 +29,10 @@ export const YesNoChoice = ({
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+        gridTemplateColumns: { xs: "1fr 1fr" },
         gap: "12px",
         maxWidth: 560,
+        width: "100%",
       }}
     >
       {options.map((opt) => {
@@ -45,8 +46,8 @@ export const YesNoChoice = ({
             variant={selected ? "secondary" : "warning"}
             sx={{
               justifyContent: "space-between",
-              minHeight: 56,
-              px: 3,
+              minHeight: { xs: 52, md: 56 },
+              px: { xs: 2, md: 3 },
               border: selected
                 ? `2px solid ${tokens.color.ink}`
                 : `1px solid ${tokens.color.border}`,

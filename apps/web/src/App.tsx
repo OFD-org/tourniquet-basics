@@ -44,7 +44,9 @@ function App() {
                   sx={{
                     maxWidth: "1440px",
                     margin: "0 auto",
-                    padding: "40px",
+                    width: "100%",
+                    px: { xs: "16px", sm: "24px", md: "40px" },
+                    py: { xs: "16px", sm: "24px", md: "40px" },
                   }}
                 >
                   <Routes>

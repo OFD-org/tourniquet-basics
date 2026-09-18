@@ -3,6 +3,17 @@ import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowRight } from "../../icons/ArrowRight";
 import { useFlowNavBridge } from "../../layout/Layout";
+import { tokens } from "../../theme/tokens";
+
+const navLinkSx = {
+  color: "common.black",
+  bgcolor: "info.main",
+  p: { xs: "10px 14px", sm: "12px 18px", md: "14px 24px" },
+  borderRadius: tokens.radius.md,
+  whiteSpace: "nowrap" as const,
+  transition: `transform ${tokens.motion.durationFast} ${tokens.motion.ease}, opacity ${tokens.motion.durationFast} ${tokens.motion.ease}`,
+  "&:active": { transform: "scale(0.98)" },
+};
 
 export const Navbar = () => {
   const { t } = useTranslation();
@@ -10,7 +21,6 @@ export const Navbar = () => {
   const { onBack, canGoBack } = useFlowNavBridge();
 
   const handleBack = () => {
-    // On algorithm route: only undo in-session steps — never leave to home / "not started"
     if (location.pathname.startsWith("/flow")) {
       if (canGoBack && onBack) {
         onBack();
@@ -20,122 +30,71 @@ export const Navbar = () => {
     window.location.assign("/");
   };
 
+  const links = [
+    { to: "/", label: t("home") },
+    { to: "/syndrome", label: t("syndromeHeader") },
+    { to: "/wound", label: t("woundHeader") },
+    { to: "/shift", label: t("shiftHeader") },
+    { to: "/conversion", label: t("conversionHeader") },
+  ];
+
   return (
-    <Box
-      sx={{
-        mb: "20px",
-        overflow: "auto",
-        "&::-webkit-scrollbar": {
-          height: "8px",
-        },
-        "&::-webkit-scrollbar-thumb": {
-          backgroundColor: "#ccc",
-          borderRadius: "12px",
-        },
-        "&::-webkit-scrollbar-track": {
-          backgroundColor: "#f0f0f0",
-        },
-      }}
-    >
-      <AppBar position='static' elevation={0}>
+    <Box sx={{ mb: { xs: "14px", md: "20px" } }}>
+      <AppBar position='static' elevation={0} sx={{ bgcolor: "transparent" }}>
         <Toolbar
           disableGutters
-          sx={{ p: 0, minHeight: "48px !important", minWidth: "max-content" }}
+          sx={{
+            p: 0,
+            minHeight: "unset !important",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: { xs: "8px", sm: "10px" },
+            alignItems: "stretch",
+          }}
         >
+          <MuiLink
+            underline='none'
+            onClick={handleBack}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              color: ({ palette }) => palette.common.white,
+              background: ({ palette }) => palette.secondary.main,
+              borderRadius: tokens.radius.md,
+              p: { xs: "10px 16px", md: "12px 28px 12px 20px" },
+              cursor: "pointer",
+              opacity: location.pathname.startsWith("/flow") && !canGoBack ? 0.55 : 1,
+              transition: `opacity ${tokens.motion.durationFast} ${tokens.motion.ease}, transform ${tokens.motion.durationFast} ${tokens.motion.ease}`,
+              "&:active": { transform: "scale(0.98)" },
+            }}
+          >
+            <ArrowRight direction='down' color='rgba(255, 255, 255, 1)' />
+            <Typography variant='caption' sx={{ alignSelf: "end" }}>
+              {t("back")}
+            </Typography>
+          </MuiLink>
+
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-              gap: "12px",
+              flexWrap: "wrap",
+              gap: { xs: "8px", sm: "10px" },
+              flex: "1 1 auto",
+              minWidth: 0,
             }}
           >
-            <MuiLink
-              underline='none'
-              onClick={handleBack}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                color: ({ palette }) => palette.common.white,
-                background: ({ palette }) => palette.secondary.main,
-                borderRadius: "12px",
-                p: "12px 53px 12px 24px",
-                cursor: "pointer",
-                opacity: location.pathname.startsWith("/flow") && !canGoBack ? 0.55 : 1,
-              }}
-            >
-              <ArrowRight direction='down' color='rgba(255, 255, 255, 1)' />
-              <Typography variant='caption' sx={{ alignSelf: "end" }}>
-                {t("back")}
-              </Typography>
-            </MuiLink>
-            <MuiLink
-              component={Link}
-              to='/'
-              underline='none'
-              sx={{
-                color: ({ palette }) => palette.common.black,
-                background: ({ palette }) => palette.info.main,
-                p: "14px 24px",
-                borderRadius: "12px",
-              }}
-            >
-              <Typography variant='caption'>{t("home")}</Typography>
-            </MuiLink>
-            <MuiLink
-              component={Link}
-              to='/syndrome'
-              underline='none'
-              sx={{
-                color: ({ palette }) => palette.common.black,
-                background: ({ palette }) => palette.info.main,
-                p: "14px 24px",
-                borderRadius: "12px",
-              }}
-            >
-              <Typography variant='caption'>{t("syndromeHeader")}</Typography>
-            </MuiLink>
-            <MuiLink
-              component={Link}
-              to='/wound'
-              underline='none'
-              sx={{
-                color: ({ palette }) => palette.common.black,
-                background: ({ palette }) => palette.info.main,
-                p: "14px 24px",
-                borderRadius: "12px",
-              }}
-            >
-              <Typography variant='caption'>{t("woundHeader")}</Typography>
-            </MuiLink>
-            <MuiLink
-              component={Link}
-              to='/shift'
-              underline='none'
-              sx={{
-                color: ({ palette }) => palette.common.black,
-                background: ({ palette }) => palette.info.main,
-                p: "14px 24px",
-                borderRadius: "12px",
-              }}
-            >
-              <Typography variant='caption'>{t("shiftHeader")}</Typography>
-            </MuiLink>
-            <MuiLink
-              component={Link}
-              to='/conversion'
-              underline='none'
-              sx={{
-                color: ({ palette }) => palette.common.black,
-                background: ({ palette }) => palette.info.main,
-                p: "14px 24px",
-                borderRadius: "12px",
-              }}
-            >
-              <Typography variant='caption'>{t("conversionHeader")}</Typography>
-            </MuiLink>
+            {links.map((item) => (
+              <MuiLink
+                key={item.to}
+                component={Link}
+                to={item.to}
+                underline='none'
+                sx={navLinkSx}
+              >
+                <Typography variant='caption'>{item.label}</Typography>
+              </MuiLink>
+            ))}
           </Box>
         </Toolbar>
       </AppBar>

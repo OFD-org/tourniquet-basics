@@ -2,37 +2,21 @@ import { Box, Typography } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { CustomList } from "../components/ui-kit/CustomList";
+import { pageChrome } from "../../theme/tokens";
 
 export const Syndrome: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-        minHeight: "calc(100vh - 148px)",
-      }}
-    >
-      <Typography
-        variant='overline'
-        sx={{
-          p: "24px 40px",
-          borderRadius: "12px",
-          background: ({ palette }) => palette.secondary.main,
-          color: ({ palette }) => palette.common.white,
-        }}
-      >
+    <Box className='page-enter' sx={pageChrome.stack}>
+      <Typography variant='overline' sx={pageChrome.title}>
         {t("syndrome.title")}
       </Typography>
 
       <Box
         sx={{
           flex: 1,
-          p: "24px",
-          borderRadius: "12px",
-          background: ({ palette }) => palette.common.white,
+          ...pageChrome.surface,
         }}
       >
         <Typography>
