@@ -53,8 +53,8 @@ export const Navbar = () => {
             p: 0,
             minHeight: "unset !important",
             display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            alignItems: { xs: "stretch", md: "center" },
+            flexDirection: "column",
+            alignItems: "stretch",
             gap: { xs: "10px", md: "12px" },
           }}
         >
@@ -64,7 +64,7 @@ export const Navbar = () => {
               alignItems: "center",
               justifyContent: "space-between",
               gap: 1.5,
-              width: { xs: "100%", md: "auto" },
+              width: "100%",
             }}
           >
             <MuiLink
@@ -89,9 +89,7 @@ export const Navbar = () => {
                 {t("back")}
               </Typography>
             </MuiLink>
-            <Box sx={{ display: { xs: "block", md: "none" } }}>
-              <LanguageSwitcher />
-            </Box>
+            <LanguageSwitcher />
           </Box>
 
           <Box
@@ -100,7 +98,7 @@ export const Navbar = () => {
               flexWrap: "nowrap",
               alignItems: "center",
               gap: { xs: "8px", sm: "10px" },
-              flex: "1 1 auto",
+              width: "100%",
               minWidth: 0,
               overflowX: "auto",
               scrollSnapType: "x mandatory",
@@ -134,9 +132,6 @@ export const Navbar = () => {
                 </MuiLink>
               );
             })}
-            <Box sx={{ display: { xs: "none", md: "block" }, ml: "auto", pl: 1 }}>
-              <LanguageSwitcher />
-            </Box>
           </Box>
         </Toolbar>
       </AppBar>
