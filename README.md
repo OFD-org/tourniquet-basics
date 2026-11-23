@@ -22,7 +22,17 @@ Cursor rules in [`.cursor/rules/`](./.cursor/rules/) apply the same conventions 
 
 Origins: web from `oyakovytskyi/Dima_turniket` (poll); API from `oyakovytskyi/Dima_turniket_be`.
 
-## Requirements
+## Public tutorial development
+
+The web app now runs independently: no login, API, database or Google credentials are required. Run `pnpm install --frozen-lockfile`, then `pnpm dev:web`. Use `pnpm build:web` to build and `CI=true pnpm --filter @tourniquet/web run test --watchAll=false --runInBand` to test. Tutorial progress resets when you leave or reload the page.
+
+Legacy backend/account code is retained for reference; the full-stack instructions below apply only when working on that backend.
+
+## Netlify deployment
+
+Connect this repository's `main` branch to Netlify. The root `netlify.toml` sets Node.js 24, the `pnpm build:web` build command, and `apps/web/build` publish directory. pnpm 9.15.0 is pinned in `package.json`. No API, database or authentication environment variables are needed for the public tutorial. The public `_redirects` file provides SPA routing so direct visits and refreshes at `/flow` and the information pages work.
+
+## Legacy full-stack requirements
 
 - Node.js 20+
 - [pnpm](https://pnpm.io) 9+

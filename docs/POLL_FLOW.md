@@ -1,3 +1,5 @@
+> **Current public tutorial:** Sign-in, signup, sign-out and OAuth routes are disabled in the web app. Start opens `/flow` directly. The tutorial uses `apps/web/src/data/tutorial-flow.ts` and browser component state; it makes no auth or poll API requests. Back undoes a local step. Leaving or reloading the page resets progress. Existing medical content and branching are unchanged. Legacy account/API files remain disconnected for reference; the account-based descriptions below are historical.
+
 # Poll / algorithm flow — implementation plan
 
 > **Status:** plan + definition only. Implement against [`poll-flow.definition.ts`](../apps/api/src/poll/data/poll-flow.definition.ts) in the next prompt.  

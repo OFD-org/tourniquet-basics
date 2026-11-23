@@ -3,38 +3,16 @@ import { useTranslation } from "react-i18next";
 import { ArrowRight } from "../../icons/ArrowRight";
 import { FeatureCard } from "../components/FeatureCard/FeatureCard";
 import { features } from "../../constants/constants";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthNavButtons } from "../components/ui-kit/AuthNavButtons";
 import { LanguageSwitcher } from "../../components/LanguageSwitcher";
-import { useAuth } from "../../hooks/useAuth";
-import { pollApi } from "../../api/pollApi";
 import { tokens } from "../../theme/tokens";
 
 export const Home: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const [inProgress, setInProgress] = useState(false);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setInProgress(false);
-      return;
-    }
-    pollApi
-      .status()
-      .then((res) => setInProgress(Boolean(res.data.inProgress)))
-      .catch(() => setInProgress(false));
-  }, [isAuthenticated]);
-
-  const handleStart = () => {
-    if (!isAuthenticated) {
-      navigate(`/login?redirect=${encodeURIComponent("/flow?resume=true")}`);
-      return;
-    }
-    navigate(inProgress ? "/flow?resume=true" : "/flow");
-  };
+  // Account-based status and login redirects are disabled.
+  const handleStart = () => navigate("/flow");
 
   return (
     <Box
@@ -72,7 +50,7 @@ export const Home: FC = () => {
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexWrap: "wrap" }}>
           <LanguageSwitcher />
-          <AuthNavButtons redirectAfterLogin='/flow?resume=true' />
+          {/* Sign-in, registration and sign-out controls are disabled. */}
         </Box>
       </Box>
 
@@ -99,7 +77,7 @@ export const Home: FC = () => {
             variant='button'
             sx={{ color: ({ palette }) => palette.secondary.main, alignSelf: "end" }}
           >
-            {inProgress ? t("continue") : t("start")}
+            {t("start")}
           </Typography>
           <ArrowRight />
         </Button>

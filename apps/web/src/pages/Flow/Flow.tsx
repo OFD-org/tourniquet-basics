@@ -2,7 +2,6 @@ import { FC, useEffect, useMemo, useRef } from "react";
 import { Box, Typography, Button, CircularProgress, Alert } from "@mui/material";
 import { Link as RouterLink, useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../../hooks/useAuth";
 import { usePoll } from "../../hooks/usePoll";
 import { FlowPageShell } from "../components/ui-kit/FlowPageShell";
 import { FlowAccordion } from "../components/ui-kit/FlowAccordion";
@@ -14,7 +13,6 @@ import { localizeFlowNode } from "../../i18n/localizeFlowNode";
 
 export const Flow: FC = () => {
   const { t, i18n } = useTranslation();
-  const { isAuthenticated } = useAuth();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const shouldResume = searchParams.get("resume") === "true";
@@ -43,12 +41,6 @@ export const Flow: FC = () => {
   );
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate(`/login?redirect=${encodeURIComponent("/flow?resume=true")}`, {
-        replace: true,
-      });
-      return;
-    }
     if (startedRef.current) return;
     startedRef.current = true;
     startOrResume().then(() => {
@@ -56,7 +48,7 @@ export const Flow: FC = () => {
         navigate("/flow", { replace: true });
       }
     });
-  }, [isAuthenticated, startOrResume, navigate, shouldResume]);
+  }, [startOrResume, navigate, shouldResume]);
 
   useEffect(() => {
     register({
@@ -68,10 +60,6 @@ export const Flow: FC = () => {
   useEffect(() => {
     return () => register({});
   }, [register]);
-
-  if (!isAuthenticated) {
-    return null;
-  }
 
   const flowTitle = t("algorithm");
 

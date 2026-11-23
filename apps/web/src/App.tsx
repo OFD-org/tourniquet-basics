@@ -12,11 +12,11 @@ import { Flow } from "./pages/Flow";
 import { TourniquetShift } from "./pages/TourniquetShift";
 import { Conversion } from "./pages/Conversion";
 import { Sources } from "./pages/Sources";
-import { Login } from "./pages/Login";
-import { Signup } from "./pages/Signup";
-import { AuthCallback } from "./pages/AuthCallback";
+// Authentication disabled for the public tutorial: pages/Login.
+// Authentication disabled for the public tutorial: pages/Signup.
+// Authentication disabled for the public tutorial: pages/AuthCallback.
 import { NotFound } from "./pages/NotFound";
-import { GuestRoute } from "./components/GuestRoute";
+// Authentication disabled for the public tutorial: components/GuestRoute.
 import { GlobalLoader } from "./components/Loader/GlobalLoader";
 
 function App() {
@@ -27,16 +27,7 @@ function App() {
 
         <BrowserRouter>
           <Routes>
-            {/* Guest-only routes: redirect to / if already logged in */}
-            <Route element={<GuestRoute />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-            </Route>
-
-            {/* Google OAuth callback – no auth guard needed */}
-            <Route path="/auth/callback" element={<AuthCallback />} />
-
-            {/* All remaining routes are publicly accessible, auth handled per-component */}
+            {/* Account routes are disabled; all learning pages are public. */}
             <Route
               path="/*"
               element={
@@ -59,7 +50,7 @@ function App() {
                       <Route path="/conversion" element={<Conversion />} />
                       <Route path="/sources" element={<Sources />} />
                     </Route>
-                    {/* 404 inside protected area */}
+                    {/* Unknown public route */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Box>
