@@ -28,9 +28,9 @@ The web app now runs independently: no login, API, database or Google credential
 
 Legacy backend/account code is retained for reference; the full-stack instructions below apply only when working on that backend.
 
-## Netlify deployment
+## Vercel deployment
 
-Connect this repository's `main` branch to Netlify. The root `netlify.toml` sets Node.js 24, the `pnpm build:web` build command, and `apps/web/build` publish directory. pnpm 9.15.0 is pinned in `package.json`. No API, database or authentication environment variables are needed for the public tutorial. The public `_redirects` file provides SPA routing so direct visits and refreshes at `/flow` and the information pages work.
+Connect this repository's `main` branch to Vercel with the project Root Directory set to the repository root. Select Node.js 24.x in the project settings. The root `vercel.json` configures frozen-lockfile installation, the `pnpm build:web` build command, the `apps/web/build` output directory, and SPA rewrites for direct visits and refreshes at `/flow` and the information pages. pnpm 9.15.0 is pinned in `package.json`. No API, database or authentication environment variables are needed for the public tutorial.
 
 ## Legacy full-stack requirements
 
