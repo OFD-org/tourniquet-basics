@@ -152,7 +152,8 @@ export const Flow: FC = () => {
                 sx={{
                   width: "100%",
                   maxHeight: 360,
-                  objectFit: "cover",
+                  height: "auto",
+                  objectFit: "contain",
                   borderRadius: tokens.radius.sm,
                   border: `1px solid ${tokens.color.border}`,
                 }}
